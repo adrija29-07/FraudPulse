@@ -1,0 +1,217 @@
+﻿python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python -c "import 
+zipfile, 
+xml.etree.ElementTree 
+as ET; z=zipfile.Zip 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "<string>", 
+line 1, in <module>
+  File "<string>", 
+line 1, in <listcomp>
+  File "C:\Users\Adrija
+\AppData\Local\Programs
+\Python\Python310\lib\e
+ncodings\cp1252.py", 
+line 19, in encode
+    return codecs.charm
+ap_encode(input,self.er
+rors,encoding_table)[0]
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\u20b9' in position 
+0: character maps to 
+<undefined>
+UI / UX  DESIGN DOCUMENT
+Fund Flow Tracking
+for Fraud Detection
+PS3  ù  IDEA 2.0 Hackathon  ù  Vidyavihar University
+Document Type
+UI/UX Design Document
+Problem Statement
+PS3 ù Tracking of Funds for Fraud Detection
+Design Theme
+Dark Finance + Light Investigator Workbench
+Inspired By
+Fintech Dashboard (Image 1) + AceDeal UI (Image 2)
+Primary Color
+#E8660A (Burnt Orange)
+Version
+1.0 ù Hackathon Edition
+1. Design Overview & Inspiration
+The PS3 Fund Flow Tracking platform draws from two distinct design languages seen in the uploaded reference screenshots ù blending them strategically across the two primary user modes of the application.
+1.1  Reference Analysis ù Image 1 (Dark Finance Dashboard)
+The first reference shows a sophisticated crypto/finance dashboard with a near-black background (#0D0D0D), burnt-orange accent color (#E8660A), and modular card-based layout. Key design observations:
+Dark theme creates authority and focus ù ideal for the high-stakes Alert & Monitoring view
+Orange accent (#E8660A) used exclusively for CTAs, positive indicators, and active elements ù e.g. the 'Exchange' button, percentage badges, and chart highlights
+Cards are dark (#1A1A1A) with subtle border separation ù no heavy drop shadows
+Typography uses a bold sans-serif for large numbers (account balances, profit figures) with smaller muted labels below each metric
+The Portfolio Tokens section uses pill/chip components for category tags (similar to how we tag account types: Savings, Current, Corporate)
+Activity chart uses an area/line chart with orange fill ù maps directly to our transaction volume over time chart
+'Withers' badge pattern (orange pill) will be adapted for alert severity tags: HIGH, MEDIUM, LOW
+1.2  Reference Analysis ù Image 2 (AceDeal Light Dashboard)
+The second reference shows a light-mode analytics dashboard with a soft purple/lavender color scheme. This maps to the Investigator Workbench ù where analysts review cases in detail. Key design observations:
+Light cards with very subtle purple-tinted backgrounds (#F7F5FF) reduce eye strain during long investigation sessions
+The Balance History panel layout (label + amount + timestamp + status) maps directly to our Transaction Timeline panel
+Payment Analytics section with 'Orders Placed: 120' and metric cards maps to our 'Alerts Triggered', 'Amount at Risk', 'Cases Resolved' KPI cards
+The pie/donut chart (Total Orders by Category) maps to our Fund Flow by Channel breakdown (NEFT, RTGS, UPI, ATM)
+'In Progress' and 'Paid' status pills map to our case status workflow: Open, Under Investigation, Escalated, Closed
+Recent Orders list with avatar + description + status maps to our Recent Alerts feed with account name + pattern description + risk score
+1.3  Hybrid Design Strategy
+Rather than choosing one theme, the PS3 platform uses a purposeful dual-theme architecture:
+Screen / Module
+Theme Applied
+Rationale
+Main Monitoring Dashboard
+Dark (Image 1 inspired)
+Conveys urgency; mirrors SOC and trading floor aesthetics that bank security teams recognise
+Investigator Workbench
+Light (Image 2 inspired)
+Easier to read during long investigations; more document/report-like feel
+Graph Visualisation Panel
+Dark with neon overlays
+Transaction graph nodes pop on dark background; colour-coding is more visible
+FIU Report Generator
+Light / neutral
+Report output must look professional and printable
+Alert Queue / Triage
+Dark with orange/red accents
+Mirrors SIEM interfaces that analysts are familiar with
+Login / Landing
+Dark with orange gradient hero
+Strong first impression matching Image 1 premium banner style
+2. Color System
+The color palette is derived directly from the reference screenshots and extended with functional semantic colors for the fraud detection context.
+2.1  Primary Palette
+Token Name
+Hex Value
+Source
+Usage
+--color-accent
+#E8660A
+Image 1 ù Exchange button, badge fills
+Primary CTAs, active states, positive alerts, chart highlights
+--color-accent-gold
+#F5A623
+Image 1 ù percentage badges
+Secondary accents, warning states, chart area fills
+--color-bg-dark
+#0D0D0D
+Image 1 ù main background
+Dashboard background, monitoring screen
+--color-card-dark
+#1A1A1A
+Image 1 ù card surfaces
+Card backgrounds in dark mode
+--color-card-light
+#F7F5FF
+Image 2 ù card surfaces
+Card backgrounds in light/investigator mode
+--color-purple
+#7B5EA7
+Image 2 ù sidebar, headings
+Section headers, navigation active state, tags
+--color-bg-light
+#FFFFFF
+Image 2 ù page background
+Investigator workbench page background
+--color-border-dark
+#2A2A2A
+Image 1 ù card borders
+Borders in dark mode
+--color-border-light
+#E8E4F4
+Image 2 ù card borders
+Borders in light mode
+2.2  Semantic / Functional Colors
+Token Name
+Hex Value
+Semantic Meaning
+Where Used
+--color-risk-critical
+#FF4757
+Critical risk / confirmed fraud
+Node color in graph, alert badge, risk score 80-100
+--color-risk-high
+#FF6B35
+High risk suspicious pattern
+Alert badge, risk score 60-79, node glow
+--color-risk-medium
+#F5A623
+Medium risk ù needs review
+Alert badge, risk score 40-59, warning state
+--color-risk-low
+#00C48C
+Low risk / clean transaction
+Clean node color in graph, risk score 0-39
+--color-flow-active
+#4F9EFF
+Active / live transaction stream
+Animated edge in graph during live demo
+--color-dormant
+#555577
+Dormant account
+Greyed-out node in graph
+--color-positive
+#00C48C
+Positive delta / increase
+Image 1 percentage up-arrows, metric improvements
+--color-negative
+#FF4757
+Negative delta / decline
+Amount decreases, loss indicators
+2.3  Gradient Definitions
+Gradients are used sparingly, matching the premium feel of Image 1's orange banner:
+Gradient Token
+Definition
+Usage
+--gradient-hero
+linear-gradient(135deg, #E8660A 0%, #F5A623 100%)
+Hero banner, premium upgrade card (mirrors Image 1 top banner exactly)
+--gradient-card-glow
+radial-gradient(circle at top-left, #E8660A15, transparent 60%)
+Subtle glow on hovered alert cards in dark mode
+--gradient-graph-bg
+radial-gradient(ellipse at center, #1A1A2E 0%, #0D0D0D 100%)
+Background of the transaction graph panel
+--gradient-risk-bar
+linear-gradient(90deg, #00C48C, #F5A623, #FF4757)
+Risk score progress bar ù green to red spectrum
+3. Typography System
+Typography is chosen to balance financial data density (requiring clear tabular numerics) with investigative document readability. This mirrors the dual-font approach seen in both reference images.
+Role
+Font Family
+Weight
+Size
+Usage Example
+Display / Hero
+Syne or Space Grotesk
+800 ExtraBold
+48û72px
+Dashboard title, page hero headings
+Section Heading
+Syne
+700 Bold
+24û32px
+Panel titles: 'Alert Queue', 'Graph View'
+Metric Number
+DM Mono or Roboto Mono
+600 SemiBold
+28û48px

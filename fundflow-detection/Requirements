@@ -1,0 +1,94 @@
+# =====================================================
+# FundFlow — Requirements
+# PS3 · IDEA 2.0 Hackathon · Vidyavihar University
+# =====================================================
+
+# ─────────────────────────────────────────────
+# RUNTIME DEPENDENCIES (loaded via CDN)
+# ─────────────────────────────────────────────
+
+D3.js == 7.x
+  URL: https://d3js.org/d3.v7.min.js
+  Use: Force-directed graphs, SVG rendering, data binding,
+       zoom/pan, drag behaviour, transitions, scales
+
+Google Fonts (Syne) == latest
+  URL: https://fonts.googleapis.com/css2?family=Syne:wght@700;800
+  Use: Display headings and titles
+
+Google Fonts (Space Mono) == latest
+  URL: https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700
+  Use: Financial numbers, account IDs, monospace UI
+
+Google Fonts (DM Sans) == latest
+  URL: https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500
+  Use: Body text, labels, descriptions
+
+Google Fonts (DM Mono) == latest
+  URL: https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500
+  Use: Badges, tags, small monospace elements
+
+
+# ─────────────────────────────────────────────
+# DEV SERVER (choose ONE — all optional)
+# ─────────────────────────────────────────────
+
+# Option A: Python (zero install, recommended)
+# python >= 3.x
+# Command: python -m http.server 3000
+
+# Option B: Node.js serve
+# node >= 14.x
+# npx serve .
+# OR
+# npx http-server -p 3000
+
+# Option C: VS Code Live Server Extension
+# Extension ID: ritwickdey.liveserver
+# Version: >= 5.7.9
+
+
+# ─────────────────────────────────────────────
+# BROWSER REQUIREMENTS
+# ─────────────────────────────────────────────
+
+# Chrome  >= 90
+# Firefox >= 88
+# Edge    >= 90
+# Safari  >= 14
+#
+# Required browser APIs used in this project:
+#   - ES6+ (const, let, arrow functions, template literals,
+#           destructuring, spread, optional chaining, nullish coalescing)
+#   - Fetch API (not used — all data is local)
+#   - SVG DOM manipulation
+#   - CSS Custom Properties (variables)
+#   - localStorage (theme persistence)
+#   - requestAnimationFrame
+#   - window.print() (PDF export)
+#   - Blob + URL.createObjectURL (fallback text download)
+
+
+# ─────────────────────────────────────────────
+# DATA FILES (included in repo)
+# ─────────────────────────────────────────────
+
+# data.js
+#   - 200 account objects (generated from customer_profiles.csv + account_status.csv)
+#   - 1930 transaction objects (generated from transactions.csv)
+#   - Exposes: realAccounts[], realTransactions[], accountMap{}, riskSummary{}
+#   - Size: ~720 KB
+
+# Source CSVs (NOT included in repo — used only to generate data.js):
+#   transactions.csv        — 1930 rows, fields: txn_id, sender, receiver, amount, timestamp, channel, branch
+#   customer_profiles.csv   — 200 rows, fields: account, age, profession, income, risk_level
+#   account_status.csv      — 200 rows, fields: account, open_date, last_txn, dormant
+#   graph_edges.csv         — edge list with branch/amount/channel/timestamp
+#   fund_flow.gexf          — graph format (Gephi compatible)
+#   fund_flow.graphml       — graph format (Cytoscape compatible)
+
+
+# ─────────────────────────────────────────────
+# NO INSTALL NEEDED — just run a local server
+# and open http://localhost:3000/index.html
+# ─────────────────────────────────────────────

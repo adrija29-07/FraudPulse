@@ -1,0 +1,211 @@
+﻿
+PRODUCT REQUIREMENTS DOCUMENT
+Tracking of Funds within Bank
+for Fraud Detection
+PS3  |  IDEA 2.0 Hackathon  |  Vidyavihar University
+Category
+Details
+Problem Statement
+PS3
+Domain
+Financial Crime / Anti-Money Laundering (AML)
+Priority
+Critical
+Complexity
+High
+Core Technologies
+Graph Analytics, GNN, Neo4j, D3.js Visualisation
+Reporting Body
+Financial Intelligence Unit (FIU), RBI
+Version
+1.0
+
+1. Executive Summary
+Money laundering through banking systems costs the global economy trillions annually. Traditional rule-based fraud detection systems fail to catch sophisticated layering schemes that spread transactions across many accounts, branches, and channels. Fund flow patterns that appear benign in isolation reveal criminal intent only when viewed as a connected graph.
+This PRD defines an intelligent Fund Flow Tracking system that maps end-to-end movement of funds within the bank using graph analytics and machine learning. The system visualises suspicious patterns, enables investigators to trace complete money trails, and auto-generates evidence packages for reporting to the Financial Intelligence Unit (FIU).
+2. Problem Statement
+2.1 Background
+Banks process millions of transactions daily across accounts, products, branches, and digital channels. Money launderers exploit the complexity and volume of these transactions to obscure the origin and destination of illicit funds through a three-stage process: Placement, Layering, and Integration.
+2.2 Key Fraud Patterns to Detect
+Pattern
+Description
+Detection Challenge
+Rapid Layering
+Funds moved through 10+ accounts in <24 hours
+High transaction volume obscures trail
+Round-Tripping
+A sends to B sends to C sends back to A
+Circular graphs not caught by linear rules
+Structuring / Smurfing
+Large amounts split into sub-threshold transactions (e.g. <Rs.49,999)
+Individually, each txn appears normal
+Dormant Account Activation
+Inactive accounts suddenly receive large wire transfers
+Historical baseline required
+Profile Mismatch
+Customer declared as 'student' receives Rs.50L corporate transfers
+Requires cross-referencing KYC data
+Shell Account Chains
+Funds cycle through accounts with no business purpose
+No single trigger point
+
+3. Goals & Objectives
+Goal
+Success Metric
+Target
+Map complete fund flows
+% of transactions included in graph
+100% coverage
+Pattern detection accuracy
+True positive rate on known fraud cases
+>90%
+False positive rate
+Alerts requiring no action
+<15%
+Investigation time reduction
+Time to generate FIU report
+<30 minutes (vs. 3+ days manual)
+Alert response time
+Time from transaction to alert
+<5 minutes
+
+4. User Personas
+Persona
+Role
+Primary Need
+AML Investigator
+Reviews flagged cases, traces fund flows, files STRs
+Interactive graph to trace and annotate fund paths
+Fraud Analyst
+Monitors real-time alerts, triages cases
+Risk-scored alert queue with quick drill-down
+Branch Manager
+Notified of suspicious activity in their branch
+Simple summary of flagged transactions
+Compliance Officer
+Files regulatory reports, manages FIU submissions
+Auto-generated STR/CTR evidence packages
+Chief Risk Officer
+Oversees AML programme effectiveness
+Executive dashboard with KPIs and trends
+
+5. Functional Requirements
+5.1 Transaction Ingestion & Graph Construction
+Ingest real-time transaction data from core banking, NEFT/RTGS/IMPS, UPI, and ATM channels
+Construct a live transaction graph: nodes = accounts/entities, edges = fund transfers with amount, timestamp, channel
+Enrich nodes with KYC data: customer type, declared income, occupation, risk rating
+Maintain rolling 12-month transaction history in graph database
+Support batch ingestion for historical data analysis
+5.2 Pattern Detection Engine
+Graph Neural Network (GNN) model trained on labelled fraud cases to score suspicious subgraphs
+Rule-based layer for deterministic patterns: structuring below Rs.50,000, same-day round trips, dormant activation
+Anomaly detection for accounts deviating from their historical behavioural baseline
+Community detection algorithms (Louvain, Label Propagation) to identify money mule networks
+Velocity checks: flag accounts with >20 transactions per hour
+5.3 Investigation Workbench
+Interactive force-directed graph: zoom, pan, expand node connections
+Timeline view: animate fund flow step-by-step to replay the money trail
+Filter controls: by date range, amount, account type, channel, branch
+Node annotations: investigators can add notes and flag nodes as confirmed fraud
+Shortest path tool: trace the quickest route between any two accounts
+Evidence collection: select nodes/edges and bundle into exportable case file
+5.4 Risk Scoring & Alert Queue
+Each suspicious pattern assigned a risk score (0-100) based on pattern type, amount, and account profiles
+Priority alert queue sorted by risk score with SLA timers
+Alert categories: Suspicious Transaction Report (STR), Cash Transaction Report (CTR), counterfeit
+One-click escalation to senior investigator or legal team
+5.5 FIU Evidence Package Generation
+Auto-generate pre-filled STR (Suspicious Transaction Report) in FIU-IND prescribed format
+Attach transaction graph snapshot, account details, and behavioural analysis
+Include chronological narrative of fund movement auto-written by LLM
+Digital audit trail of all investigator actions on the case
+Secure submission portal integration with FIU-IND goAML system
+6. Non-Functional Requirements
+Requirement
+Specification
+Transaction Throughput
+Process 10,000 transactions per second at peak
+Alert Latency
+Suspicious pattern detected within 5 minutes of transaction
+Graph Query Performance
+Subgraph queries return in <3 seconds for 6-hop traversals
+Data Retention
+Transaction graph retained for 7 years (RBI requirement)
+Availability
+99.95% uptime with active-passive failover
+Security
+Role-based access control; all data encrypted; full audit log
+Scalability
+Support 500M+ transaction nodes in graph database
+
+7. Technical Architecture
+Component
+Technology
+Purpose
+Transaction Streaming
+Apache Kafka
+Real-time transaction ingestion pipeline
+Graph Database
+Neo4j Enterprise
+Fund flow graph storage and traversal
+GNN Model
+PyTorch Geometric, DGL
+Fraud pattern detection on graph data
+Rule Engine
+Apache Flink + custom rules
+Deterministic fraud pattern matching
+Visualisation
+D3.js, React, Sigma.js
+Interactive investigation workbench
+LLM Narrative
+GPT-4 / Claude API
+Auto-generate case narratives for FIU reports
+Backend API
+FastAPI (Python)
+Core application logic and data serving
+Search & Filter
+Elasticsearch
+Fast account and transaction lookup
+
+8. Implementation Roadmap
+Phase
+Deliverable
+Timeline
+Phase 1 - MVP
+Graph construction + circular transaction detection + basic viz
+Hackathon Demo
+Phase 2
+GNN model integration + full pattern library + alert queue
+Month 1-2
+Phase 3
+FIU report auto-generation + goAML integration
+Month 3-4
+Phase 4
+Real-time streaming at full scale + model retraining pipeline
+Month 5-6
+
+9. Risks & Mitigations
+Risk
+Impact
+Mitigation
+High false positive rate causing alert fatigue
+High
+Tiered scoring + analyst feedback loop to retrain model
+Graph database performance at scale
+High
+Sharding by account cluster; caching frequent subgraph queries
+Regulatory data privacy constraints
+Medium
+Data masking in UI; role-based access; SOC2 compliance
+Evasion by sophisticated launderers
+Medium
+Continuous model retraining on new confirmed fraud patterns
+
+10. Success Criteria for Hackathon Demo
+Synthetic transaction dataset loaded into Neo4j graph database
+Live interactive graph visualisation with colour-coded suspicious nodes
+Circular transaction (round-trip) and structuring patterns detected and highlighted
+Investigator can click a node, trace its full fund flow, and export a case file
+Auto-generated case narrative shown using LLM integration
+
+END OF DOCUMENT ù PS3 PRD v1.0

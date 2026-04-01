@@ -1,0 +1,43 @@
+# =====================================================
+# .gitignore — FundFlow
+# =====================================================
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (if anyone runs npx serve)
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Source CSV files (raw data — keep out of repo for privacy)
+*.csv
+*.gexf
+*.graphml
+
+# Zip uploads
+*.zip
+
+# Build / temp
+dist/
+build/
+.temp/

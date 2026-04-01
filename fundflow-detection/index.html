@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FundFlow — AI Fraud Detection Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-logo">FF</div>
+      <div class="nav-items">
+        <a class="nav-item active" data-view="dashboard" onclick="switchView('dashboard')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg></span><span class="nav-label">Dashboard</span></a>
+        <a class="nav-item" data-view="graph" onclick="switchView('graph')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <circle cx="6" cy="6" r="2" />
+              <circle cx="18" cy="6" r="2" />
+              <circle cx="18" cy="18" r="2" />
+              <circle cx="6" cy="18" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <line x1="8" y1="6" x2="10" y2="11" />
+              <line x1="14" y1="11" x2="16" y2="6" />
+              <line x1="14" y1="13" x2="16" y2="18" />
+              <line x1="8" y1="18" x2="10" y2="13" />
+            </svg></span><span class="nav-label">Graph View</span></a>
+        <a class="nav-item" data-view="alerts" onclick="switchView('alerts')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              <circle cx="18" cy="5" r="3" fill="#FF4757" stroke="none" />
+            </svg></span><span class="nav-label">Alert Queue</span></a>
+        <a class="nav-item" data-view="investigation" onclick="switchView('investigation')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+              <circle cx="14" cy="13" r="3" />
+              <line x1="18" y1="16.5" x2="20" y2="18.5" />
+            </svg></span><span class="nav-label">Investigation</span></a>
+        <a class="nav-item" data-view="flow" onclick="switchView('flow')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+              <circle cx="5" cy="12" r="2" fill="currentColor" />
+            </svg></span><span class="nav-label">Money Flow</span></a>
+        <a class="nav-item" data-view="heatmap" onclick="switchView('heatmap')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
+            </svg></span><span class="nav-label">Risk Heat Map</span></a>
+        <a class="nav-item" data-view="replay" onclick="switchView('replay')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg></span><span class="nav-label">Timeline Replay</span></a>
+        <a class="nav-item" data-view="rings" onclick="switchView('rings')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <circle cx="12" cy="4" r="2" />
+              <circle cx="19.5" cy="16" r="2" />
+              <circle cx="4.5" cy="16" r="2" />
+              <line x1="12" y1="6" x2="12" y2="9" />
+              <line x1="18" y1="15" x2="15" y2="13" />
+              <line x1="6" y1="15" x2="9" y2="13" />
+            </svg></span><span class="nav-label">Fraud Rings</span></a>
+        <a class="nav-item" data-view="reports" onclick="switchView('reports')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg></span><span class="nav-label">FIU Reports</span></a>
+        <a class="nav-item" data-view="dna" onclick="switchView('dna')"><span class="nav-icon"><svg viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M2 2c3 2 7 2 10 0s7-2 10 0" />
+              <path d="M2 22c3-2 7-2 10 0s7 2 10 0" />
+              <path d="M2 12c3 2 7 2 10 0s7-2 10 0" />
+              <line x1="7" y1="2" x2="7" y2="22" />
+              <line x1="17" y1="2" x2="17" y2="22" />
+            </svg></span><span class="nav-label">DNA Fingerprint</span></a>
+        <a class="nav-item" data-view="temporal" onclick="switchView('temporal')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M3 9h18" />
+              <rect x="7" y="13" width="2" height="3" rx="1" fill="currentColor" />
+              <rect x="11" y="11" width="2" height="5" rx="1" fill="currentColor" />
+              <rect x="15" y="12" width="2" height="4" rx="1" fill="currentColor" />
+            </svg></span><span class="nav-label">Temporal Heatmap</span></a>
+        <a class="nav-item" data-view="accounts" onclick="switchView('accounts')" style="position:relative;"><span
+            class="nav-icon"><svg viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg></span><span class="nav-label">Accounts</span></a>
+      </div>
+      <div class="nav-bottom">
+        <a class="nav-item" data-view="settings" onclick="switchView('settings')"><span class="nav-icon"><svg
+              viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg></span><span class="nav-label">Settings</span></a>
+      </div>
+    </nav>
+
+    <div class="main-content" id="mainContent">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Fund <span>Flow</span> Dashboard</h1>
+            <p class="page-subtitle">Real-time AI monitoring · GNN Fraud Detection Engine v2.4</p>
+          </div>
+          <div class="header-actions">
+            <span class="live-dot"></span>
+            <span class="header-time" id="liveTime"></span>
+            <button class="header-btn voice-btn" id="voiceBtn" onclick="toggleVoice()" title="Voice Investigation">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" y1="19" x2="12" y2="23" />
+                <line x1="8" y1="23" x2="16" y2="23" />
+              </svg>
+            </button>
+            <button class="header-btn ai-chat-btn" onclick="toggleAIChat()" title="AI Co-Investigator">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            </button>
+            <button class="header-btn" onclick="toggleTheme()" title="Toggle Theme" id="themeToggleBtn">
+              <svg viewBox="0 0 24 24" id="themeIcon"
+                style="width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- VOICE STATUS BAR -->
+        <div class="voice-status-bar" id="voiceStatusBar" style="display:none;">
+          <div class="voice-orb" id="voiceOrb"></div>
+          <span id="voiceStatusText">Listening...</span>
+          <span class="voice-transcript" id="voiceTranscript"></span>
+          <button class="voice-stop-btn" onclick="stopVoice()">Stop</button>
+        </div>
+
+        <!-- GNN AI OVERLAY -->
+        <div class="gnn-overlay-panel" id="gnnOverlay">
+          <div class="gnn-header">
+            <div class="gnn-badge"><span class="gnn-dot"></span>GNN v2.4 · Live</div>
+            <div class="gnn-stats">
+              <span class="gnn-stat"><span class="gnn-stat-label">Confidence</span><span class="gnn-stat-value"
+                  id="gnnConfVal">94%</span></span>
+              <span class="gnn-stat"><span class="gnn-stat-label">Pattern</span><span class="gnn-stat-value"
+                  id="gnnPatternVal">Round-Trip</span></span>
+              <span class="gnn-stat"><span class="gnn-stat-label">Model</span><span class="gnn-stat-value">PyTorch
+                  Geometric</span></span>
+              <span class="gnn-refresh">↻ auto-updates 6s</span>
+            </div>
+          </div>
+          <div class="gnn-finding" id="gnnFinding">Initialising graph neural network model...</div>
+          <div class="gnn-progress-track">
+            <div class="gnn-progress-fill" id="gnnProgressFill"></div>
+          </div>
+        </div>
+
+        <!-- LIVE METRICS STRIP -->
+        <div class="live-metrics-strip">
+          <div class="lm-item">
+            <div class="lm-value" id="lmTxn">0</div>
+            <div class="lm-label">Transactions</div>
+          </div>
+          <div class="lm-sep"></div>
+          <div class="lm-item">
+            <div class="lm-value accent" id="lmVol">₹0Cr</div>
+            <div class="lm-label">Volume Today</div>
+          </div>
+          <div class="lm-sep"></div>
+          <div class="lm-item">
+            <div class="lm-value danger" id="lmFlag">0</div>
+            <div class="lm-label">Flagged Now</div>
+          </div>
+          <div class="lm-sep"></div>
+          <div class="lm-item">
+            <div class="lm-value" id="lmAml">0%</div>
+            <div class="lm-label">AML Compliance</div>
+          </div>
+          <div class="lm-sep"></div>
+          <div class="lm-item">
+            <div class="lm-value success" id="lmModel">GNN</div>
+            <div class="lm-label">Active Model</div>
+          </div>
+        </div>
+
+        <!-- KPI CARDS -->
+        <div class="kpi-row" id="kpiRow">
+          <div class="kpi-card">
+            <div class="kpi-label">Total Alerts Today</div>
+            <div class="kpi-value-row"><span class="kpi-value" data-target="247">0</span><span class="kpi-delta up">↑
+                12.4%</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Amount at Risk</div>
+            <div class="kpi-value-row"><span class="kpi-value" data-target="32569" data-prefix="₹"
+                data-format="currency">₹0</span><span class="kpi-delta up">↑ 8.7%</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Cases Open</div>
+            <div class="kpi-value-row"><span class="kpi-value" data-target="34">0</span><span class="kpi-delta down">↓
+                3.2%</span></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Avg Risk Score</div>
+            <div class="kpi-value-row"><span class="kpi-value" data-target="67" data-suffix="/100">0</span><span
+                class="kpi-delta up">↑ 5.1%</span></div>
+          </div>
+        </div>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Transaction Graph</h2><span class="panel-badge">Live</span>
+            </div>
+            <div class="graph-container" id="dashboardGraph">
+              <div class="graph-controls"><button class="graph-ctrl-btn active">All Nodes</button><button
+                  class="graph-ctrl-btn">Flagged Only</button><button class="graph-ctrl-btn">Last 24h</button></div>
+              <div class="graph-legend">
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:#00C48C"></div>Clean
+                </div>
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:#F5A623"></div>Suspicious
+                </div>
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:#FF4757"></div>Fraud
+                </div>
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:#555577"></div>Dormant
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Alert Queue</h2><span class="panel-badge" id="alertCount">12 Active</span>
+            </div>
+            <div class="alert-feed" id="alertFeed"></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid-bottom">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Transaction Volume</h2><span class="panel-badge">30 Days</span>
+            </div>
+            <div class="chart-area" id="areaChart"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Fund Flow by Channel</h2>
+            </div>
+            <div class="chart-area" id="donutChart"></div>
+            <div class="chart-legend-list" id="donutLegend"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRAPH VIEW -->
+      <div class="view" id="view-graph">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Transaction <span>Graph</span></h1>
+            <p class="page-subtitle">GNN predictive edges · 4 layout modes · Interactive investigation</p>
+          </div>
+          <div class="header-actions"><span class="live-dot"></span><span class="header-time"
+              id="liveTime2"></span><button class="header-btn ai-chat-btn" onclick="toggleAIChat()"
+              title="AI Co-Investigator"><svg viewBox="0 0 24 24"
+                style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg></button></div>
+        </div>
+        <div class="graph-fullscreen" id="graphFullscreen">
+          <div class="graph-top-strip">
+            <div class="layout-mode-group">
+              <span class="layout-label">Layout:</span>
+              <button class="graph-ctrl-btn layout-btn active" data-layout="force"
+                onclick="switchGraphLayout('force')">Force</button>
+              <button class="graph-ctrl-btn layout-btn" data-layout="hierarchical"
+                onclick="switchGraphLayout('hierarchical')">Hierarchical</button>
+              <button class="graph-ctrl-btn layout-btn" data-layout="circular"
+                onclick="switchGraphLayout('circular')">Circular</button>
+              <button class="graph-ctrl-btn layout-btn" data-layout="geographic"
+                onclick="switchGraphLayout('geographic')">Branch Map</button>
+            </div>
+            <div class="graph-strip-divider"></div>
+            <button class="graph-ctrl-btn active">All Nodes</button>
+            <button class="graph-ctrl-btn">Flagged Paths</button>
+            <button class="graph-ctrl-btn">Amount > 1L</button>
+            <button class="graph-ctrl-btn" id="heatmapToggleBtn" onclick="toggleHeatmap()"
+              style="border-color:#7B5EA7;color:#7B5EA7;">Heat Map: OFF</button>
+            <button class="graph-ctrl-btn" id="predictiveToggleBtn" onclick="togglePredictive()"
+              style="border-color:#4F9EFF;color:#4F9EFF;">GNN Predict: OFF</button>
+            <button class="graph-ctrl-btn" style="margin-left:auto" id="playPauseBtn">Live Stream</button>
+          </div>
+          <div class="graph-legend" style="bottom:16px;right:16px;">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#00C48C"></div>Clean
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#F5A623"></div>Suspicious
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#FF4757"></div>Fraud
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#555577"></div>Dormant
+            </div>
+          </div>
+          <div class="predictive-legend" id="predictiveLegend"
+            style="display:none;bottom:16px;left:80px;position:absolute;background:rgba(0,0,0,0.7);padding:8px 12px;border-radius:8px;">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#4F9EFF;border:2px dashed #4F9EFF;background:transparent;">
+              </div>Predicted next hop
+            </div>
+            <div style="font-size:10px;color:#666;margin-top:4px;">Opacity = GNN confidence</div>
+          </div>
+          <div class="heatmap-legend" id="heatmapLegend">
+            <div class="heatmap-legend-title">Transaction Volume</div>
+            <div class="heatmap-gradient-bar"></div>
+            <div class="heatmap-labels"><span>Low</span><span>Mid</span><span>High</span></div>
+          </div>
+          <div class="node-side-panel" id="nodeSidePanel">
+            <button class="node-panel-close" onclick="closeNodePanel()">x</button>
+            <div class="node-panel-header">
+              <div class="node-panel-name" id="nodeName">Account Name</div>
+              <div class="node-panel-id" id="nodeId">A/C XXXX</div>
+            </div>
+            <div class="node-panel-section">
+              <div class="node-panel-section-title">Risk Assessment</div>
+              <div style="text-align:center;"><svg class="risk-gauge" id="riskGauge" viewBox="0 0 120 80"></svg></div>
+            </div>
+            <div class="node-panel-section">
+              <div class="node-panel-section-title">Account Details</div>
+              <div class="node-detail-row"><span class="node-detail-label">Account Type</span><span
+                  class="node-detail-value" id="nodeType">Savings</span></div>
+              <div class="node-detail-row"><span class="node-detail-label">Declared Income</span><span
+                  class="node-detail-value" id="nodeIncome">0</span></div>
+              <div class="node-detail-row"><span class="node-detail-label">Total Inflow (30d)</span><span
+                  class="node-detail-value" id="nodeInflow">0</span></div>
+              <div class="node-detail-row"><span class="node-detail-label">Total Outflow (30d)</span><span
+                  class="node-detail-value" id="nodeOutflow">0</span></div>
+              <div class="node-detail-row"><span class="node-detail-label">Connections</span><span
+                  class="node-detail-value" id="nodeConnections">0</span></div>
+            </div>
+            <div class="node-panel-section" id="nodePredictionSection" style="display:none;">
+              <div class="node-panel-section-title">GNN Predicted Next Hops</div>
+              <div id="nodePredictions"></div>
+            </div>
+            <div class="node-panel-section">
+              <div class="node-panel-section-title">Recent Transactions</div>
+              <div id="nodeTransactions"></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;"
+              onclick="switchView('investigation')">Open Investigation</button>
+            <button class="btn btn-secondary" style="width:100%;justify-content:center;margin-top:8px;"
+              onclick="askAIAboutNode()">Ask AI Co-Investigator</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERT QUEUE -->
+      <div class="view" id="view-alerts">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Alert <span>Queue</span></h1>
+            <p class="page-subtitle">Real-time flagged transactions sorted by risk score</p>
+          </div>
+          <div class="header-actions"><span class="live-dot"></span><button class="btn btn-secondary">Export
+              CSV</button></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Active Alerts</h2><span class="panel-badge">12 Active</span>
+          </div>
+          <div class="alert-feed" id="alertFeedFull" style="max-height:calc(100vh - 260px);"></div>
+        </div>
+      </div>
+
+      <!-- 4-PANEL INVESTIGATION SUITE -->
+      <div class="view view-investigation" id="view-investigation">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Investigation <span>Suite</span></h1>
+            <p class="page-subtitle">Case #FD-2026-00842 · 4-Panel Forensic Workbench</p>
+          </div>
+          <div class="header-actions"><span class="badge badge-review">IN REVIEW</span><button onclick="toggleAIChat()"
+              style="padding:6px 14px;font-size:12px;border-radius:8px;background:rgba(232,102,10,0.15);border:1px solid #E8660A;color:#E8660A;cursor:pointer;">Ask
+              AI</button></div>
+        </div>
+        <div class="case-header">
+          <div class="case-header-item"><span class="case-header-label">Case ID</span><span
+              class="case-header-value mono">FD-2026-00842</span></div>
+          <div class="case-header-item"><span class="case-header-label">Primary Account</span><span
+              class="case-header-value">Rajesh Mehta Enterprises</span></div>
+          <div class="case-header-item"><span class="case-header-label">Risk Score</span><span
+              class="case-header-value"><span class="badge badge-critical">84 / 100</span></span></div>
+          <div class="case-header-item"><span class="case-header-label">Pattern</span><span
+              class="case-header-value">Round-Trip · 4 Accounts</span></div>
+          <div class="case-header-item"><span class="case-header-label">Amount at Risk</span><span
+              class="case-header-value mono">18,45,000</span></div>
+          <div class="case-header-item"><span class="case-header-label">Assigned To</span><span
+              class="case-header-value">Analyst Priya S.</span></div>
+        </div>
+        <div class="inv-tab-bar">
+          <button class="inv-tab active" data-panel="inv-alerts" onclick="switchInvPanel('inv-alerts')">Alerts</button>
+          <button class="inv-tab" data-panel="inv-trace" onclick="switchInvPanel('inv-trace')">Fund Trace</button>
+          <button class="inv-tab" data-panel="inv-entity" onclick="switchInvPanel('inv-entity')">Entity Profile</button>
+          <button class="inv-tab" data-panel="inv-evidence" onclick="switchInvPanel('inv-evidence')">Evidence
+            Builder</button>
+        </div>
+        <!-- Panel 1: Alerts -->
+        <div class="inv-panel active" id="inv-alerts">
+          <div class="inv-panel-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Evidence Graph</h2><span class="panel-badge">Subgraph</span>
+              </div>
+              <div class="evidence-graph" id="evidenceGraph"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Case Alerts</h2><span class="panel-badge badge-critical">4 Critical</span>
+              </div>
+              <div class="inv-alerts-list" id="invAlertsList"></div>
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="btn btn-primary" onclick="switchInvPanel('inv-evidence')">Build Evidence Package</button>
+            <button class="btn btn-danger" id="escalateBtn" onclick="escalateCaseToSenior()">Escalate to Senior</button>
+            <button class="btn btn-secondary" id="falsePositiveBtn" onclick="markFalsePositive()">Mark False
+              Positive</button>
+            <button class="btn btn-ghost" id="closeCaseBtn" onclick="closeInvestigationCase()">Close Case</button>
+          </div>
+        </div>
+        <!-- Panel 2: Fund Trace -->
+        <div class="inv-panel" id="inv-trace">
+          <div class="trace-header-row">
+            <div class="trace-stat"><span class="trace-stat-val">4</span><span class="trace-stat-label">Hops</span>
+            </div>
+            <div class="trace-stat"><span class="trace-stat-val danger">15,000</span><span
+                class="trace-stat-label">Leakage</span></div>
+            <div class="trace-stat"><span class="trace-stat-val">0.08%</span><span class="trace-stat-label">Leakage
+                %</span></div>
+            <div class="trace-stat"><span class="trace-stat-val">8h 40m</span><span
+                class="trace-stat-label">Timespan</span></div>
+            <div class="trace-stat">
+              <div class="channel-mix-bar">
+                <div style="width:45%;background:#E8660A;" title="NEFT 45%"></div>
+                <div style="width:30%;background:#4F9EFF;" title="RTGS 30%"></div>
+                <div style="width:25%;background:#00C48C;" title="UPI 25%"></div>
+              </div><span class="trace-stat-label">Channel Mix</span>
+            </div>
+          </div>
+          <div class="trace-timeline">
+            <div class="trace-node origin">
+              <div class="trace-node-name">Rajesh Mehta Enterprises</div>
+              <div class="trace-node-id">A/C A001 · Corporate · Risk 84</div>
+              <div class="trace-node-amount">18,45,000</div>
+            </div>
+            <div class="trace-arrow">
+              <div class="trace-arrow-line"></div>
+              <div class="trace-arrow-label">NEFT · 4,95,000 · 09:15</div>
+            </div>
+            <div class="trace-node fraud">
+              <div class="trace-node-name">Shell Corp A</div>
+              <div class="trace-node-id">A/C A002 · Corporate · Risk 92</div>
+              <div class="trace-node-amount">No declared purpose</div>
+            </div>
+            <div class="trace-arrow">
+              <div class="trace-arrow-line"></div>
+              <div class="trace-arrow-label">RTGS · 4,90,000 · 10:42</div>
+            </div>
+            <div class="trace-node suspicious">
+              <div class="trace-node-name">Dormant A/C 7823</div>
+              <div class="trace-node-id">A/C A003 · Savings · Risk 71</div>
+              <div class="trace-node-amount">Inactive 18 months</div>
+            </div>
+            <div class="trace-arrow">
+              <div class="trace-arrow-line"></div>
+              <div class="trace-arrow-label">NEFT · 4,85,000 · 14:08</div>
+            </div>
+            <div class="trace-node suspicious">
+              <div class="trace-node-name">Partner Entity B</div>
+              <div class="trace-node-id">A/C A004 · Current · Risk 65</div>
+              <div class="trace-node-amount">Profile mismatch</div>
+            </div>
+            <div class="trace-arrow return">
+              <div class="trace-arrow-line"></div>
+              <div class="trace-arrow-label" style="color:#FF4757;">UPI · 4,80,000 · 17:55 ROUND-TRIP</div>
+            </div>
+            <div class="trace-node origin">
+              <div class="trace-node-name">Rajesh Mehta Enterprises</div>
+              <div class="trace-node-id">A/C A001 · Cycle complete</div>
+              <div class="trace-node-amount" style="color:#FF4757;">15,000 lost in transit</div>
+            </div>
+          </div>
+        </div>
+        <!-- Panel 3: Entity Profile -->
+        <div class="inv-panel" id="inv-entity">
+          <div class="entity-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Declared vs Actual Behaviour</h2>
+              </div>
+              <div class="panel-body">
+                <div class="entity-compare-row"><span class="entity-label">Annual Income (declared)</span>
+                  <div class="entity-bar-wrap">
+                    <div class="entity-bar clean" style="width:18%"></div><span class="entity-bar-val">6,00,000</span>
+                  </div>
+                </div>
+                <div class="entity-compare-row"><span class="entity-label">Monthly Flow (actual)</span>
+                  <div class="entity-bar-wrap">
+                    <div class="entity-bar danger" style="width:100%"></div><span class="entity-bar-val"
+                      style="color:#FF4757;">18,45,000</span>
+                  </div>
+                </div>
+                <div class="entity-compare-row"><span class="entity-label">Peer Avg (similar accts)</span>
+                  <div class="entity-bar-wrap">
+                    <div class="entity-bar mid" style="width:35%"></div><span class="entity-bar-val">6,40,000</span>
+                  </div>
+                </div>
+                <div class="entity-mismatch-badge">Mismatch Factor: <strong>3.07x</strong> declared annual income
+                  transacted in a single month</div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Anomaly Indicators</h2>
+              </div>
+              <div class="panel-body">
+                <div class="anomaly-bar-row"><span>Transaction Velocity</span>
+                  <div class="anomaly-mini-bar" style="--fill:85%;--col:#FF4757;"></div><span class="anomaly-score"
+                    style="color:#FF4757;">85</span>
+                </div>
+                <div class="anomaly-bar-row"><span>Geographic Spread</span>
+                  <div class="anomaly-mini-bar" style="--fill:72%;--col:#F5A623;"></div><span class="anomaly-score"
+                    style="color:#F5A623;">72</span>
+                </div>
+                <div class="anomaly-bar-row"><span>Structuring Risk</span>
+                  <div class="anomaly-mini-bar" style="--fill:91%;--col:#FF4757;"></div><span class="anomaly-score"
+                    style="color:#FF4757;">91</span>
+                </div>
+                <div class="anomaly-bar-row"><span>Shell Entity Links</span>
+                  <div class="anomaly-mini-bar" style="--fill:95%;--col:#FF4757;"></div><span class="anomaly-score"
+                    style="color:#FF4757;">95</span>
+                </div>
+                <div class="anomaly-bar-row"><span>Dormant A/C Usage</span>
+                  <div class="anomaly-mini-bar" style="--fill:78%;--col:#F5A623;"></div><span class="anomaly-score"
+                    style="color:#F5A623;">78</span>
+                </div>
+                <div class="anomaly-bar-row"><span>Layering Depth</span>
+                  <div class="anomaly-mini-bar" style="--fill:88%;--col:#FF4757;"></div><span class="anomaly-score"
+                    style="color:#FF4757;">88</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel" style="grid-column:1/-1;">
+              <div class="panel-header">
+                <h2 class="panel-title">Transaction Pattern Analysis</h2>
+              </div>
+              <div class="pattern-chips">
+                <span class="pattern-chip critical">Round-Trip Detected</span><span
+                  class="pattern-chip critical">Structuring (sub-50K)</span><span class="pattern-chip high">Dormant
+                  Activation</span><span class="pattern-chip high">Velocity Anomaly</span><span
+                  class="pattern-chip medium">Profile Mismatch 3.07x</span><span class="pattern-chip medium">Shell
+                  Entity Involvement</span><span class="pattern-chip low">Cross-Branch Flow</span><span
+                  class="pattern-chip low">Watchlist Connection</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Panel 4: Evidence Builder -->
+        <div class="inv-panel" id="inv-evidence">
+          <div class="evidence-header">
+            <div class="evidence-title">FIU/SAR Evidence Package - Auto-Assembled</div>
+            <div class="evidence-subtitle">Case FD-2026-00842 - Ready for submission</div>
+          </div>
+          <div class="evidence-checklist" id="evidenceChecklist"></div>
+          <div class="evidence-actions">
+            <button class="btn btn-primary" onclick="downloadEvidencePackage()">Download Evidence Package</button>
+            <button class="btn btn-secondary" onclick="submitToFIU()">Submit to FIU-IND</button>
+            <button class="btn btn-ghost" onclick="switchView('reports')">Generate Full STR</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIU REPORTS -->
+      <div class="view view-reports" id="view-reports">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">FIU <span>Report</span> Generator</h1>
+            <p class="page-subtitle">Auto-generated Suspicious Transaction Reports — All Accounts</p>
+          </div>
+          <div class="header-actions"><span class="badge badge-review">DRAFT</span></div>
+        </div>
+        <div class="report-grid">
+          <div class="panel report-summary">
+            <div class="panel-header">
+              <h2 class="panel-title">Case Summary</h2>
+            </div>
+            <div class="panel-body">
+              <div class="report-field">
+                <div class="report-field-label">Case ID</div>
+                <div class="report-field-value mono">FD-2026-00842</div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Report Type</div>
+                <div class="report-field-value">Suspicious Transaction Report (STR)</div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Pattern Detected</div>
+                <div class="report-field-value">Round-Trip Fund Transfer</div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Accounts Involved</div>
+                <div class="report-field-value mono">4</div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Total Amount</div>
+                <div class="report-field-value mono" style="color:#FF4757;font-size:20px;">18,45,000</div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Risk Score</div>
+                <div class="report-field-value"><span class="badge badge-critical">84 / 100</span></div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Primary Subject</div>
+                <div class="report-field-value">Rajesh Mehta Enterprises</div>
+              </div>
+              <div class="report-field">
+                <div class="report-field-label">Period</div>
+                <div class="report-field-value mono">14 Mar - 15 Mar 2026</div>
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;"
+                id="generateBtn" onclick="startReportStream()">Generate Report</button>
+            </div>
+          </div>
+          <div class="panel report-preview">
+            <div class="panel-header">
+              <h2 class="panel-title">Report Preview</h2><span class="panel-badge" id="reportStatus">Awaiting
+                Generation</span>
+            </div>
+            <div class="report-text" id="reportText"><span style="color:#888;font-style:italic;">Click "Generate Report"
+                to auto-generate the STR narrative...</span></div>
+            <div class="report-actions">
+              <button class="btn btn-primary" id="downloadBtn" style="opacity:0.5;pointer-events:none;">Download
+                PDF</button>
+              <button class="btn btn-secondary" id="submitBtn" style="opacity:0.5;pointer-events:none;">Submit to
+                FIU</button>
+            </div>
+          </div>
+        </div>
+        <!-- ALL ACCOUNTS REPORTS -->
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-header">
+            <h2 class="panel-title">Individual Account Reports</h2><span class="panel-badge">18 Accounts · PDF per
+              Account</span>
+          </div>
+          <div style="padding:10px 0;border-bottom:1px solid #1A1A2A;font-size:11px;color:#555;padding-left:16px;">Click
+            ↓ PDF Report to generate a detailed per-account investigation PDF — for all accounts, not just flagged ones.
+          </div>
+          <div id="allAccountReportsList" style="max-height:420px;overflow-y:auto;"></div>
+        </div>
+      </div>
+
+      <!-- MONEY FLOW -->
+      <div class="view" id="view-flow">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Money <span>Flow</span> Animation</h1>
+            <p class="page-subtitle">Step-by-step circular fund movement visualisation</p>
+          </div>
+          <div class="header-actions"><button class="btn btn-primary" onclick="playMoneyFlow()">Play
+              Animation</button><button class="btn btn-secondary" onclick="resetMoneyFlow()">Reset</button></div>
+        </div>
+        <div class="flow-panel">
+          <div class="flow-title">Round-Trip Circular Pattern - Case FD-2026-00842</div>
+          <div class="flow-subtitle">Watch money move through 4 accounts forming a complete laundering loop</div>
+          <div class="flow-canvas" id="flowCanvas"></div>
+          <div class="flow-step-log" id="flowStepLog">
+            <div class="flow-step-item" id="flow-step-0"><span class="flow-step-time">09:15</span><span>Rajesh Mehta to
+                Shell Corp A</span><span class="flow-step-amount">4,95,000</span></div>
+            <div class="flow-step-item" id="flow-step-1"><span class="flow-step-time">10:42</span><span>Shell Corp A to
+                Dormant 7823</span><span class="flow-step-amount">4,90,000</span></div>
+            <div class="flow-step-item" id="flow-step-2"><span class="flow-step-time">14:08</span><span>Dormant 7823 to
+                Partner Entity B</span><span class="flow-step-amount">4,85,000</span></div>
+            <div class="flow-step-item" id="flow-step-3"><span class="flow-step-time">17:55</span><span>Partner Entity B
+                to Rajesh Mehta</span><span class="flow-step-amount">4,80,000</span></div>
+          </div>
+          <div class="flow-detection-banner" id="flowDetectionBanner">
+            <div class="flow-detection-icon">!</div>
+            <div>
+              <div class="flow-detection-title">Circular Laundering Detected</div>
+              <div class="flow-detection-desc">4-account round-trip completed in 8h 40m · Total: 18,45,000 · Risk Score:
+                84/100</div>
+            </div>
+            <button class="btn btn-primary" style="margin-left:auto;flex-shrink:0"
+              onclick="switchView('investigation')">Investigate</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RISK HEAT MAP -->
+      <div class="view" id="view-heatmap">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Branch <span>Risk</span> Heat Map</h1>
+            <p class="page-subtitle">Fraud risk concentration by branch</p>
+          </div>
+          <div class="header-actions"><span class="badge badge-critical">2 HIGH RISK</span><span
+              class="badge badge-medium" style="margin-left:4px">3 MEDIUM</span></div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Branch Risk Scores</h2><span class="panel-badge">Risk 0-100</span>
+            </div>
+            <div class="heatmap-chart-wrap" id="branchChartArea"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Branch Overview</h2>
+            </div>
+            <div class="branch-heatmap" id="branchHeatmapGrid" style="padding:16px;gap:10px;"></div>
+            <div style="padding:12px 16px;border-top:1px solid var(--border-default);">
+              <div id="branchDetailText" style="font-size:13px;color:#888;">Click a branch card to see details</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIMELINE REPLAY -->
+      <div class="view" id="view-replay">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Timeline <span>Replay</span></h1>
+            <p class="page-subtitle">Step through the fraud sequence chronologically</p>
+          </div>
+        </div>
+        <div class="timeline-replay-panel">
+          <div class="replay-controls">
+            <button class="btn btn-primary" id="replayPlayBtn" onclick="toggleReplayPlay()">Play</button>
+            <button class="btn btn-secondary" onclick="replayStepBack()">Back</button>
+            <button class="btn btn-secondary" onclick="replayStepForward()">Forward</button>
+            <button class="btn btn-ghost" onclick="resetReplay()">Reset</button>
+            <div class="replay-progress">
+              <div class="replay-bar-track">
+                <div class="replay-bar-fill" id="replayBarFill"></div>
+              </div>
+            </div>
+            <span class="replay-time-label" id="replayCurrentTime">-</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1.4fr 1fr;">
+            <div class="replay-graph-area" id="replayGraphArea">
+              <div class="replay-step-indicator">
+                <div class="replay-step-num" id="replayStepNum">0/6</div>
+                <div class="replay-step-label" id="replayStepLabel">Press Play</div>
+              </div>
+            </div>
+            <div style="max-height:300px;overflow-y:auto;border-left:1px solid var(--border-default);"
+              id="replayEventList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DNA FINGERPRINT -->
+      <div class="view" id="view-dna">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">DNA <span>Behavioral</span> Fingerprinting</h1>
+            <p class="page-subtitle">Unique behavioral signature per account — deviation detection</p>
+          </div>
+          <div class="header-actions"><span class="badge badge-critical">AI Feature</span></div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Select Account</h2>
+            </div>
+            <div style="padding:12px;display:flex;flex-wrap:wrap;gap:8px;">
+              <script>/* populated by JS */</script>
+            </div>
+            <div id="dnaRadarContainer" style="height:280px;padding:0 8px;"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Explainable AI — SHAP Scores</h2><span class="panel-badge">GNN v2.4</span>
+            </div>
+            <div style="padding:16px;">
+              <div style="font-size:11px;color:#555;margin-bottom:14px;">Feature importance for fraud verdict — higher =
+                more influential</div>
+              <div id="shapBarsContainer"></div>
+            </div>
+            <div class="panel-header" style="margin-top:8px;">
+              <h2 class="panel-title">Peer Comparison</h2>
+            </div>
+            <div id="peerCompareContainer" style="padding:14px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEMPORAL VELOCITY HEATMAP -->
+      <div class="view" id="view-temporal">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Temporal <span>Velocity</span> Heatmap</h1>
+            <p class="page-subtitle">When fraud spikes occur — time-of-day × day-of-week analysis</p>
+          </div>
+          <div class="header-actions"><span class="badge badge-critical">2 Spikes Detected</span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Transaction Velocity Heatmap</h2><span class="panel-badge">Hour × Day</span>
+          </div>
+          <div style="padding:12px 0 0;">
+            <div id="temporalHeatmapCanvas" style="height:240px;"></div>
+            <div id="temporalTooltip"
+              style="text-align:center;font-family:'Space Mono',monospace;font-size:11px;color:#F5A623;padding:8px;opacity:0;transition:opacity 0.2s;">
+            </div>
+          </div>
+          <div style="padding:14px 16px;border-top:1px solid #1A1A2A;display:flex;gap:20px;">
+            <div><span
+                style="display:inline-block;width:12px;height:12px;background:#FF4757;border-radius:2px;margin-right:5px;"></span><span
+                style="font-size:11px;color:#888;">High fraud velocity</span></div>
+            <div><span
+                style="display:inline-block;width:12px;height:12px;background:#1A3A6B;border-radius:2px;margin-right:5px;"></span><span
+                style="font-size:11px;color:#888;">Low activity</span></div>
+            <div style="margin-left:auto;font-size:11px;color:#444;">Case FD-2026-00842 spike highlighted in red border
+              · Tuesday 09:00–18:00</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Peak Fraud Hours</h2>
+            </div>
+            <div style="padding:14px;">
+              <div style="font-size:11px;color:#888;margin-bottom:12px;">Hours with highest fraud transaction volume
+              </div>
+              <div id="peakHoursChart" style="height:120px;"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Fraud Spike Alerts</h2>
+            </div>
+            <div style="padding:12px;">
+              <div style="padding:8px;border-left:2px solid #FF4757;margin-bottom:8px;">
+                <div style="font-size:11px;font-weight:600;color:#FF4757;">Tuesday 09:15–17:55</div>
+                <div style="font-size:10px;color:#666;">FD-2026-00842 round-trip circular pattern — 4 hops in 8h 40m
+                </div>
+              </div>
+              <div style="padding:8px;border-left:2px solid #F5A623;margin-bottom:8px;">
+                <div style="font-size:11px;font-weight:600;color:#F5A623;">Tuesday 07:30–13:35</div>
+                <div style="font-size:10px;color:#666;">RING-002 mule network — 4-account burst over 6 hours</div>
+              </div>
+              <div style="padding:8px;border-left:2px solid #7B5EA7;">
+                <div style="font-size:11px;font-weight:600;color:#7B5EA7;">Wednesday 00:00–04:00</div>
+                <div style="font-size:10px;color:#666;">Unusual off-hours activity — A016 Mule Account high velocity
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRAUD RINGS -->
+      <div class="view" id="view-rings">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Fraud <span>Ring</span> Detection</h1>
+            <p class="page-subtitle">Clustered account networks flagged by graph analytics · 20+ accounts across 5 rings
+            </p>
+          </div>
+          <div class="header-actions"><span class="badge badge-critical">5 Rings Detected</span></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-secondary ring-tab-btn active" onclick="selectFraudRing(0)"
+            style="font-size:11px;padding:6px 12px;">RING-001 · Round-Trip Alpha</button>
+          <button class="btn btn-ghost ring-tab-btn" onclick="selectFraudRing(1)"
+            style="font-size:11px;padding:6px 12px;">RING-002 · Mule Network Beta</button>
+          <button class="btn btn-ghost ring-tab-btn" onclick="selectFraudRing(2)"
+            style="font-size:11px;padding:6px 12px;">RING-003 · Shell Corp Gamma</button>
+          <button class="btn btn-ghost ring-tab-btn" onclick="selectFraudRing(3)"
+            style="font-size:11px;padding:6px 12px;">RING-004 · Dormant Net</button>
+          <button class="btn btn-ghost ring-tab-btn" onclick="selectFraudRing(4)"
+            style="font-size:11px;padding:6px 12px;">RING-005 · Mega Ring (8 accts)</button>
+        </div>
+        <div class="fraud-ring-panel">
+          <div class="ring-detected-header">
+            <div class="ring-pulse-dot"></div>
+            <div>
+              <div class="ring-detected-title" id="fraudRingTitle">RING-001 - Round-Trip Ring Alpha</div>
+              <div class="ring-detected-meta" id="fraudRingMeta">4 accounts</div>
+            </div><span class="ring-count-badge">CONFIRMED FRAUD</span>
+          </div>
+          <div class="ring-body">
+            <div class="ring-graph-area" id="fraudRingGraph"></div>
+            <div class="ring-accounts-list" id="fraudRingAccountList"></div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-header">
+            <h2 class="panel-title">AI Investigation Report</h2><span class="panel-badge"
+              id="aiReportStatus">Ready</span>
+          </div>
+          <div class="ai-report-stream" id="aiReportArea"><span style="color:#888;font-style:italic;">Click Generate
+              Report to produce an AI-written FIU report...</span></div>
+          <div class="ai-report-meta-row">
+            <div class="ai-meta-item"><span class="ai-meta-label">Risk Score</span><span class="ai-meta-value"
+                style="color:#FF4757">92 / 100</span></div>
+            <div class="ai-meta-item"><span class="ai-meta-label">Total Amount</span><span class="ai-meta-value"
+                style="color:#E8660A">18,45,000</span></div>
+            <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+              <button class="btn btn-primary" id="aiReportBtn" onclick="generateAIReport(activeFraudRing)">Generate FIU
+                Report</button>
+              <button class="btn btn-secondary" id="aiDownloadBtn2" style="opacity:0.5;pointer-events:none;">Download
+                PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCOUNTS -->
+      <div class="view" id="view-accounts">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Account <span>Explorer</span></h1>
+            <p class="page-subtitle">Browse all monitored accounts</p>
+          </div>
+          <div class="header-actions"><input type="text" class="search-input" placeholder="Search accounts..."
+              id="accountSearch" oninput="filterAccounts(this.value)"></div>
+        </div>
+        <div class="accounts-table-wrap">
+          <table class="accounts-table" id="accountsTable">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Risk</th>
+                <th>Score</th>
+                <th>Inflow</th>
+                <th>Outflow</th>
+                <th>Connections</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="accountsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="view" id="view-settings">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Application configuration</p>
+          </div>
+        </div>
+        <div class="settings-sections">
+          <div class="settings-section">
+            <h3 class="settings-section-title">Detection Engine</h3>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Real-time Monitoring</div>
+                <div class="setting-desc">Enable live transaction stream analysis</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">GNN Model Active</div>
+                <div class="setting-desc">Graph neural network pattern detection</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Predictive Fraud Trajectory</div>
+                <div class="setting-desc">Show GNN ghost edges for predicted next hops</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+          </div>
+          <div class="settings-section">
+            <h3 class="settings-section-title">AI Features</h3>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">AI Co-Investigator Chat</div>
+                <div class="setting-desc">Anthropic API powered forensic assistant</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Voice Investigation</div>
+                <div class="setting-desc">Hands-free via Web Speech API</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">GNN Auto-Overlay</div>
+                <div class="setting-desc">Rotating AI findings every 6s on dashboard</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+          </div>
+          <div class="settings-section">
+            <h3 class="settings-section-title">Display</h3>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Graph Animations</div>
+                <div class="setting-desc">Node pulse and edge flow animations</div>
+              </div>
+              <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Theme</div>
+                <div class="setting-desc">Toggle dark/light mode</div>
+              </div>
+              <div class="toggle" id="settingsThemeToggle" onclick="toggleTheme(); this.classList.toggle('active')">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AI CO-INVESTIGATOR CHAT PANEL -->
+  <div class="ai-chat-overlay" id="aiChatOverlay" onclick="if(event.target===this)toggleAIChat()"></div>
+  <div class="ai-chat-panel" id="aiChatPanel">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title"><span class="ai-chat-dot"></span>AI Co-Investigator</div>
+      <div class="ai-chat-meta">Anthropic API + Graph Context</div>
+      <button class="ai-chat-close" onclick="toggleAIChat()">x</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-msg ai">
+        <div class="ai-msg-bubble">Hello! I am your AI co-investigator powered by the Anthropic API. I have full context
+          of the current case including account profiles, transaction history, graph topology, and risk
+          scores.<br><br>Try: "Why is A001 suspicious?" or "Explain the round-trip pattern" or "What are the next
+          steps?"</div>
+      </div>
+    </div>
+    <div class="ai-chat-input-row">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask about any account, pattern, or case..."
+        onkeydown="if(event.key==='Enter')sendAIMessage()">
+      <button class="ai-chat-send" onclick="sendAIMessage()"><svg viewBox="0 0 24 24"
+          style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;">
+          <line x1="22" y1="2" x2="11" y2="13" />
+          <polygon points="22 2 15 22 11 13 2 9 22 2" />
+        </svg></button>
+    </div>
+  </div>
+
+  <!-- VOICE MODAL -->
+  <div class="voice-modal" id="voiceModal" style="display:none;">
+    <div class="voice-modal-inner">
+      <div class="voice-modal-orb" id="voiceModalOrb"></div>
+      <div class="voice-modal-title" id="voiceModalTitle">Listening...</div>
+      <div class="voice-modal-transcript" id="voiceModalTranscript">Speak a command</div>
+      <div class="voice-modal-hint">Try: "Show fraud accounts" - "Highlight ring one" - "Open investigation" - "Read
+        findings"</div>
+      <button class="btn btn-secondary" onclick="stopVoice()" style="margin-top:16px;">Stop Listening</button>
+    </div>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="gnn.js"></script>
+  <script src="voice.js"></script>
+  <script src="ai_chat.js"></script>
+  <script src="Fixes.js"></script>
+  <script src="enhancements.js"></script>
+  <script src="megafix.js"></script>
+  <script src="graphfix.js"></script>
+</body>
+// api.js — connects frontend to backend
+// Save in: fundflow-fraud-detection/api.js
+
+const API = 'http://127.0.0.1:8000';
+
+// Load real accounts from backend DB
+async function loadAccountsFromBackend() {
+try {
+const res = await fetch(`${API}/api/accounts/`);
+const data = await res.json();
+if (data && data.length > 0) {
+console.log(`Backend: loaded ${data.length} accounts`);
+return data.map(a => ({
+id: a.id, name: a.name, type: a.type,
+risk: a.risk, riskScore: a.risk_score,
+income: a.declared_income,
+inflow: a.inflow_30d, outflow: a.outflow_30d,
+connections: a.connections
+}));
+}
+} catch(e) {
+console.log('Backend not reachable, using demo data');
+}
+return null;
+}
+
+// Load real alerts from backend DB
+async function loadAlertsFromBackend() {
+try {
+const res = await fetch(`${API}/api/alerts/`);
+const data = await res.json();
+if (data && data.length > 0) {
+return data.map(a => ({
+name: a.name, desc: a.desc,
+amount: a.amount, time: 'just now',
+risk: a.risk_level,
+type: 'corporate',
+amountClass: a.amount_class
+}));
+}
+} catch(e) {}
+return null;
+}
+
+// Generate STR report via Anthropic API
+async function generateReportFromBackend(caseId) {
+try {
+const res = await fetch(`${API}/api/reports/generate`, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+case_id: caseId || 'FD-2026-00842',
+pattern: 'Round-Trip Fund Transfer',
+risk_score: 84, total_amount: 1845000,
+accounts: [], transactions: []
+})
+});
+const data = await res.json();
+return data.report;
+} catch(e) {
+console.log('Report generation failed:', e);
+return null;
+}
+}
+
+// Connect WebSocket for live transactions
+function connectLiveStream() {
+const ws = new WebSocket('ws://127.0.0.1:8000/ws/stream');
+ws.onopen = () => console.log('Live stream connected');
+ws.onmessage = (e) => {
+const msg = JSON.parse(e.data);
+if (msg.type === 'transaction') {
+console.log('Live txn:', msg.data);
+// Show live dot pulse on dashboard
+const dot = document.querySelector('.live-dot');
+if (dot) { dot.style.background = '#FF4757'; setTimeout(() => dot.style.background = '', 300); }
+}
+if (msg.type === 'alert') {
+console.log('New alert:', msg.data);
+}
+};
+ws.onclose = () => setTimeout(connectLiveStream, 3000); // auto-reconnect
+return ws;
+}
+
+// Run on page load
+async function initBackendConnection() {
+console.log('Connecting to backend...');
+
+// Try to load real accounts
+const backendAccounts = await loadAccountsFromBackend();
+if (backendAccounts && typeof accounts !== 'undefined') {
+// Merge backend data with frontend array
+backendAccounts.forEach(ba => {
+const idx = accounts.findIndex(a => a.id === ba.id);
+if (idx >= 0) accounts[idx] = { ...accounts[idx], ...ba };
+});
+console.log('Accounts updated from backend DB');
+}
+
+// Try to load real alerts
+const backendAlerts = await loadAlertsFromBackend();
+if (backendAlerts) {
+if (typeof alertData !== 'undefined') {
+alertData.length = 0;
+backendAlerts.forEach(a => alertData.push(a));
+}
+if (typeof renderAlerts === 'function') {
+renderAlerts('alertFeed', backendAlerts);
+renderAlerts('alertFeedFull', backendAlerts);
+}
+console.log('Alerts updated from backend DB');
+}
+
+// Start live WebSocket stream
+connectLiveStream();
+
+console.log('Backend connection complete.');
+}
+
+document.addEventListener('DOMContentLoaded', initBackendConnection);
+
+</html>

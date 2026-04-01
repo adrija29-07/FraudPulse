@@ -1,0 +1,628 @@
+
+
+TYPOGRAPHY STACK DOCUMENT
+
+PS3 — Fund Flow Tracking
+for Fraud Detection
+
+Complete Font Selection, Scale, Pairing Rules & Implementation Guide
+
+IDEA 2.0 Hackathon  —  Vidyavihar University  —  v1.0
+
+Document Type
+Typography Stack & Font Pairing Guide
+Scope
+PS3 Fund Flow Tracking — All UI screens
+Fonts Selected
+Syne · Space Mono · DM Sans · DM Mono
+Source
+All fonts free on Google Fonts
+Design References
+Dark Finance Dashboard + AceDeal Light UI
+Version
+1.0 — Hackathon Edition
+
+1. Why Typography Matters for This Dashboard
+The PS3 Fund Flow Tracking platform handles two very different cognitive tasks at the same time. Analysts need to read large financial figures at a glance under pressure, and also read dense investigative text and table data during long case review sessions. A single font cannot serve both jobs equally well.
+
+The four-font stack below was chosen by matching visual patterns directly observed in the reference screenshots — the dark finance dashboard and the AceDeal light UI — and mapping each font to a specific cognitive role in the interface.
+
+Cognitive Task
+Reference Image Pattern
+Font Assigned
+Why
+Scanning large balance figures instantly
+Image 1: $5,654.32 and $32,569.32 in large bold monospace
+Space Mono
+Fixed-width numerals prevent layout shift as live values update
+Reading panel and section titles
+Image 1: 'Portfolio Tokens', 'Home' in heavy bold sans
+Syne 800
+Ultra-geometric weight creates authority and visual hierarchy
+Reading descriptions and table data
+Image 2: AceDeal transaction descriptions and timestamps
+DM Sans
+Neutral, optimised for 12–15px density in data-heavy tables
+Reading badge labels and account IDs
+Image 1: 'Withers' pill, Image 2: 'In Progress' status pill
+DM Mono
+Tight monospaced tracking fits pill containers; IDs align perfectly
+
+2. Font 1 — Syne (Display & Headings)
+
+Fund Flow
+Syne 800 — Display
+Syne is a geometric display typeface designed for impactful headlines. Its ultra-bold 800 weight produces the same aggressive visual authority as the large titles in Image 1 ('Premium Plan', 'Home') and the AceDeal logo. It signals that this is a serious, professional platform — not a generic data tool.
+
+2.1  Syne Usage Rules
+Element
+Weight
+Size
+Color
+Letter Spacing
+Example Text
+Page / App Title
+800
+56–72px
+#E8660A (orange)
+−2px
+Fund Flow Tracker
+Main Panel Title
+800
+28–36px
+#1A1A2E (navy)
+−1px
+Transaction Graph
+Section Heading
+700
+22–26px
+#7B5EA7 (purple)
+−0.5px
+Alert Queue
+Sub-section Label
+700
+16–18px
+#1A1A2E (navy)
+0px
+Account Details
+Navigation Labels
+700
+13–14px
+#888888 (muted)
+0.5px
+DASHBOARD
+CTA Button Text
+700
+14–16px
+#FFFFFF (white)
+0.5px
+Generate Report
+
+2.2  Syne — What NOT to Do
+Never use Syne below 13px — its geometric forms lose legibility at small sizes
+Never use Syne Regular (400) — the light weight loses its identity entirely
+Never use Syne for body paragraphs or table content — use DM Sans instead
+Never use Syne for financial numbers — Space Mono must handle all numeric data
+
+2.3  Google Fonts Import — Syne Only
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
+
+font-family: 'Syne', sans-serif;
+
+3. Font 2 — Space Mono (Financial Numbers)
+
+₹5,654.32
+Space Mono 700 — Numbers
+Space Mono is a fixed-width typeface designed for code and data display. Every digit is exactly the same width — this prevents the number '₹1,234.56' from jumping in width when it updates live to '₹10,000.00'. This is the exact visual treatment used in Image 1 for the '$5,654.32' account balance and '$32,569.32' total profit figure.
+
+3.1  Space Mono Usage Rules
+Element
+Weight
+Size
+Color
+Example
+Hero Balance / Main KPI
+700
+40–56px
+#F0F0F0 on dark / #1A1A2E on light
+₹5,654.32
+Secondary KPI Value
+700
+28–36px
+#F0F0F0 on dark / #1A1A2E on light
+₹32,569.32
+Chart Tooltip Amount
+400
+13–15px
+#F0F0F0
+₹45,547.00
+Table Amount Column
+400
+13px
+#333333
+₹21,452.12
+Risk Score Display
+700
+32–40px
+Gradient: green→red
+74 / 100
+Percentage Delta
+700
+12–14px
+#00C48C / #FF4757
+↑ 56.32%
+Account / Transaction ID
+400
+11–12px
+#888888
+TXN-2024-00842
+Timestamp in Detail View
+400
+12px
+#888888
+14 Mar 2026  23:19
+
+3.2  Number Formatting Standards
+Indian number format for all INR amounts: ₹12,54,320.00 (not ₹1,254,320.00)
+Abbreviated format in graph tooltips and small cards: ₹12.5L, ₹3.2Cr, ₹450K
+Always show sign for delta values: +₹2,340.00 or −₹890.00
+Risk scores always shown as XX / 100 with a space around the slash
+Percentages always show two decimal places: 56.32% not 56%
+Never mix Space Mono and Syne in the same number — all digits must be Space Mono
+
+3.3  Google Fonts Import — Space Mono Only
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+font-family: 'Space Mono', monospace;
+
+font-variant-numeric: tabular-nums;  /* Critical for live updates */
+
+4. Font 3 — DM Sans (Body & Labels)
+
+Transaction detected between HDFC Savings A/C and dormant corporate account — circular pattern flagged
+DM Sans 400 — Body
+DM Sans is a geometric sans-serif specifically optimised for UI and digital screens. It maintains excellent legibility at 12–15px — the size range used for all table content, card descriptions, timestamps, and form labels. Its slightly condensed proportions allow more content density without crowding, matching the tight information layout seen in both reference dashboards.
+
+4.1  DM Sans Usage Rules
+Element
+Weight
+Size
+Line Height
+Color
+Example
+Card description text
+400
+14–15px
+1.6
+#333333
+Unusual outflow from dormant account
+Table body content
+400
+13px
+1.5
+#444444
+Transfer via NEFT to Corp A/C
+Timestamp — relative
+300
+12px
+1.4
+#888888
+2 minutes ago
+Timestamp — absolute
+300
+12px
+1.4
+#888888
+14 Mar 2026, 23:19
+Form field label
+500
+12px
+1.4
+#555555
+Account Number
+Input placeholder
+300
+13px
+1.4
+#AAAAAA
+Search by account ID or name...
+Alert description
+400
+13–14px
+1.7
+#333333
+Round-trip pattern: 4 accounts, 3 hops
+Sidebar nav label
+500
+12–13px
+1.4
+#AAAAAA / active: #E8660A
+Dashboard
+Tooltip body text
+400
+12px
+1.5
+#FFFFFF on dark bg
+Click to view full transaction trail
+Empty state message
+300
+14px
+1.8
+#888888
+No alerts detected in the last 24 hours
+
+4.2  DM Sans — What NOT to Do
+Never use DM Sans for large headings — Syne must own all display-size text
+Never use DM Sans for financial amounts — Space Mono must own all numeric data
+Never use DM Sans Bold 700 for body text — use 500 Medium at most for emphasis
+Never set body text below 12px — readability breaks on dashboard density
+
+4.3  Google Fonts Import — DM Sans Only
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
+
+font-family: 'DM Sans', sans-serif;
+
+5. Font 4 — DM Mono (Badges, Tags & IDs)
+
+HIGH RISK
+DM Mono 500 — Badge
+DM Mono is the monospaced companion to DM Sans — designed by the same foundry to work together. It is used for all pill badges (HIGH / MEDIUM / LOW risk), status tags (OPEN / IN REVIEW / CLOSED), account IDs, transaction hashes, and any code-like content. Its tight tracking and consistent character widths make pill labels perfectly balanced inside their containers, matching the 'Withers' badge style in Image 1 and the 'In Progress' status pill in Image 2.
+
+5.1  DM Mono Usage Rules
+Element
+Weight
+Size
+Transform
+Spacing
+Example
+Risk badge — CRITICAL
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+CRITICAL
+Risk badge — HIGH
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+HIGH
+Risk badge — MEDIUM
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+MEDIUM
+Risk badge — LOW
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+LOW
+Case status — OPEN
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+OPEN
+Case status — IN REVIEW
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+IN REVIEW
+Case status — ESCALATED
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+ESCALATED
+Case status — CLOSED
+500
+10px
+UPPERCASE
+letter-spacing: 1.5px
+CLOSED
+Account / transaction ID
+400
+11–12px
+None
+letter-spacing: 0.5px
+TXN-2024-00842
+Code snippets / API
+400
+12–13px
+None
+Normal
+neo4j+s://xxxx.io
+Graph node label
+400
+10px
+None
+Normal
+A/C 4829
+Chart axis tick
+400
+11px
+None
+Normal
+₹30K / Jan
+
+5.2  Google Fonts Import — DM Mono Only
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
+
+font-family: 'DM Mono', monospace;
+
+6. Complete Google Fonts Import
+Single import line — loads all four fonts in one HTTP request. Place this at the top of your CSS file or inside the <head> of your HTML.
+
+6.1  Single-Line Import
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+6.2  CSS Custom Properties (Root Variables)
+Paste these into your :root block. Reference these variables everywhere — never hard-code font-family strings in component styles.
+
+:root {
+  /* Font Families */
+  --font-display:  'Syne', sans-serif;
+  --font-number:   'Space Mono', monospace;
+  --font-body:     'DM Sans', sans-serif;
+  --font-badge:    'DM Mono', monospace;
+
+  /* Type Scale */
+  --text-hero:     60px;
+  --text-h1:       36px;
+  --text-h2:       26px;
+  --text-h3:       20px;
+  --text-metric-xl:52px;
+  --text-metric-lg:40px;
+  --text-metric-md:28px;
+  --text-body-lg:  15px;
+  --text-body:     14px;
+  --text-body-sm:  13px;
+  --text-label:    12px;
+  --text-badge:    10px;
+  --text-caption:  11px;
+
+  /* Font Weights */
+  --weight-black:  800;
+  --weight-bold:   700;
+  --weight-medium: 500;
+  --weight-regular:400;
+  --weight-light:  300;
+}
+
+7. Ready-to-Use CSS Classes
+Copy these directly into your stylesheet. Each class corresponds to a specific UI element.
+
+7.1  Heading & Display Classes
+/* App / Hero Title */
+.text-hero {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: var(--weight-black);
+  color: #E8660A;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+/* Panel Title (e.g. 'Transaction Graph') */
+.text-panel-title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-black);
+  color: #1A1A2E;
+  letter-spacing: -1px;
+}
+
+/* Section Heading (e.g. 'Alert Queue') */
+.text-section {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  color: #7B5EA7;
+  letter-spacing: -0.5px;
+}
+
+7.2  Financial Number Classes
+/* Hero balance — e.g. ₹5,654.32 */
+.text-balance {
+  font-family: var(--font-number);
+  font-size: var(--text-metric-xl);
+  font-weight: var(--weight-bold);
+  color: #F0F0F0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
+
+/* KPI metric value — e.g. ₹32,569.32 */
+.text-metric {
+  font-family: var(--font-number);
+  font-size: var(--text-metric-lg);
+  font-weight: var(--weight-bold);
+  color: #F0F0F0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Delta / percentage — e.g. +56.32% */
+.text-delta-up   { font-family:var(--font-number); font-size:12px; font-weight:700; color:#00C48C; }
+.text-delta-down { font-family:var(--font-number); font-size:12px; font-weight:700; color:#FF4757; }
+
+/* Transaction ID */
+.text-txn-id {
+  font-family: var(--font-badge);
+  font-size: 11px;
+  font-weight: var(--weight-regular);
+  color: #888888;
+  letter-spacing: 0.5px;
+}
+
+7.3  Badge & Status Pill Classes
+/* Base badge */
+.badge {
+  font-family: var(--font-badge);
+  font-size: var(--text-badge);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Risk level variants */
+.badge-critical { color:#FF4757; background:#FF475715; border-color:#FF475740; }
+.badge-high     { color:#E8660A; background:#E8660A15; border-color:#E8660A40; }
+.badge-medium   { color:#F5A623; background:#F5A62315; border-color:#F5A62340; }
+.badge-low      { color:#00C48C; background:#00C48C15; border-color:#00C48C40; }
+
+/* Case status variants */
+.badge-open      { color:#4F9EFF; background:#4F9EFF15; border-color:#4F9EFF40; }
+.badge-review    { color:#7B5EA7; background:#7B5EA715; border-color:#7B5EA740; }
+.badge-escalated { color:#FF4757; background:#FF475715; border-color:#FF475740; }
+.badge-closed    { color:#888888; background:#88888815; border-color:#88888840; }
+
+8. Tailwind CSS Configuration
+If your team is using Tailwind CSS (recommended), extend the theme with these tokens in tailwind.config.js:
+
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Syne', 'sans-serif'],
+        number:  ['Space Mono', 'monospace'],
+        body:    ['DM Sans', 'sans-serif'],
+        badge:   ['DM Mono', 'monospace'],
+      },
+      fontSize: {
+        'hero':    ['60px',  { lineHeight:'1',   letterSpacing:'-2px'  }],
+        'h1':      ['36px',  { lineHeight:'1.1', letterSpacing:'-1px'  }],
+        'h2':      ['26px',  { lineHeight:'1.2', letterSpacing:'-0.5px'}],
+        'metric':  ['40px',  { lineHeight:'1',   letterSpacing:'-1px'  }],
+        'metric-sm':['28px', { lineHeight:'1.1', letterSpacing:'-0.5px'}],
+        'body':    ['14px',  { lineHeight:'1.6', letterSpacing:'0'     }],
+        'body-sm': ['13px',  { lineHeight:'1.5', letterSpacing:'0'     }],
+        'label':   ['12px',  { lineHeight:'1.4', letterSpacing:'0'     }],
+        'badge':   ['10px',  { lineHeight:'1',   letterSpacing:'1.5px' }],
+        'caption': ['11px',  { lineHeight:'1.4', letterSpacing:'0.5px' }],
+      },
+    },
+  },
+};
+
+8.1  Tailwind Usage Examples
+<!-- Hero balance number -->
+<span class="font-number text-metric font-bold tabular-nums text-white">
+  ₹5,654.32
+</span>
+
+<!-- Panel title -->
+<h2 class="font-display text-h2 font-black text-navy tracking-tight">
+  Transaction Graph
+</h2>
+
+<!-- Risk badge -->
+<span class="font-badge text-badge font-medium uppercase tracking-widest
+             px-2.5 py-0.5 rounded border badge-high">
+  HIGH
+</span>
+
+<!-- Transaction description -->
+<p class="font-body text-body text-gray-400 leading-relaxed">
+  Circular pattern detected across 4 accounts
+</p>
+
+9. Font Pairing Rules & Anti-Patterns
+
+9.1  Correct Pairings — Always Do This
+Context
+Font Combination
+Example
+KPI card
+Syne 700 label + Space Mono 700 value
+TOTAL ALERTS / 247
+Alert feed item
+Syne 700 title + DM Sans 400 description + DM Mono badge
+Round-trip detected · 4 hops · HIGH
+Transaction table
+DM Mono for amount column + DM Sans for all other columns
+₹21,452.12 in mono; 'NEFT Transfer' in DM Sans
+Graph node tooltip
+Space Mono for amount + DM Sans for label
+A/C 4829 · ₹3.2L · suspicious
+Navigation item
+Syne 700 for active + DM Sans 500 for inactive
+DASHBOARD (active) vs Investigations (inactive)
+Button
+Syne 700 always
+Generate STR Report  |  Exchange
+
+9.2  Anti-Patterns — Never Do This
+Anti-Pattern
+Why It Breaks
+Correct Fix
+Using Arial or Inter instead of DM Sans
+Generic look — loses the fintech identity entirely
+Replace with DM Sans 400 at same size
+Using Syne for body paragraphs
+Syne at 13px becomes illegible; its geometric forms need space
+Use DM Sans 400 for all body text
+Using DM Sans for financial amounts
+Proportional spacing causes layout shift on live updates
+Use Space Mono with tabular-nums always
+Using Space Mono for headings
+Too heavy and mechanical for display — loses elegance
+Use Syne 800 for all display/heading text
+Mixing Space Mono and DM Mono in same number
+Inconsistent width rhythm — looks broken
+Pick one: Space Mono for numbers, DM Mono for badges only
+Using font-weight 400 for Syne
+Thin weight loses all visual authority
+Always use 700 or 800 for Syne
+Setting letter-spacing on Space Mono numbers
+Monospace already has fixed spacing — adding more looks wrong
+Use letter-spacing: 0 or -1px only for Space Mono
+
+10. Quick Reference Card
+Tear-out reference for the team during the hackathon build.
+
+Font
+Role
+Weights
+Min Size
+Key Property
+Never Use For
+Syne
+Headings, titles, buttons
+700, 800
+13px
+letter-spacing: -1px to -2px
+Body text, numbers
+Space Mono
+All financial amounts, scores, IDs
+400, 700
+11px
+font-variant-numeric: tabular-nums
+Headings, body paragraphs
+DM Sans
+Body copy, tables, descriptions, labels
+300, 400, 500
+12px
+line-height: 1.6 for readability
+Display headings, numbers
+DM Mono
+Badge labels, status tags, code
+400, 500
+10px
+text-transform: uppercase + letter-spacing: 1.5px
+Large headings, paragraphs
+
+10.1  One-Line Summary
+Syne owns the titles.  Space Mono owns the numbers.  DM Sans owns the content.  DM Mono owns the badges.
+
+END OF DOCUMENT  —  PS3 Typography Stack v1.0
+
+IDEA 2.0 Hackathon  |  Vidyavihar University

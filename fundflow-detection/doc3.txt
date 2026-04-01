@@ -1,0 +1,96 @@
+﻿python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python -c "import 
+zipfile, 
+xml.etree.ElementTree 
+as ET; z=zipfile.Zip 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File "<string>", 
+line 1, in <module>
+  File "<string>", 
+line 1, in <listcomp>
+  File "C:\Users\Adrija
+\AppData\Local\Programs
+\Python\Python310\lib\e
+ncodings\cp1252.py", 
+line 19, in encode
+    return codecs.charm
+ap_encode(input,self.er
+rors,encoding_table)[0]
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\u2212' in position 
+0: character maps to 
+<undefined>
+TYPOGRAPHY STACK DOCUMENT
+PS3 ù Fund Flow Tracking
+for Fraud Detection
+Complete Font Selection, Scale, Pairing Rules & Implementation Guide
+IDEA 2.0 Hackathon  ù  Vidyavihar University  ù  v1.0
+Document Type
+Typography Stack & Font Pairing Guide
+Scope
+PS3 Fund Flow Tracking ù All UI screens
+Fonts Selected
+Syne ╖ Space Mono ╖ DM Sans ╖ DM Mono
+Source
+All fonts free on Google Fonts
+Design References
+Dark Finance Dashboard + AceDeal Light UI
+Version
+1.0 ù Hackathon Edition
+1. Why Typography Matters for This Dashboard
+The PS3 Fund Flow Tracking platform handles two very different cognitive tasks at the same time. Analysts need to read large financial figures at a glance under pressure, and also read dense investigative text and table data during long case review sessions. A single font cannot serve both jobs equally well.
+The four-font stack below was chosen by matching visual patterns directly observed in the reference screenshots ù the dark finance dashboard and the AceDeal light UI ù and mapping each font to a specific cognitive role in the interface.
+Cognitive Task
+Reference Image Pattern
+Font Assigned
+Why
+Scanning large balance figures instantly
+Image 1: $5,654.32 and $32,569.32 in large bold monospace
+Space Mono
+Fixed-width numerals prevent layout shift as live values update
+Reading panel and section titles
+Image 1: 'Portfolio Tokens', 'Home' in heavy bold sans
+Syne 800
+Ultra-geometric weight creates authority and visual hierarchy
+Reading descriptions and table data
+Image 2: AceDeal transaction descriptions and timestamps
+DM Sans
+Neutral, optimised for 12û15px density in data-heavy tables
+Reading badge labels and account IDs
+Image 1: 'Withers' pill, Image 2: 'In Progress' status pill
+DM Mono
+Tight monospaced tracking fits pill containers; IDs align perfectly
+2. Font 1 ù Syne (Display & Headings)
+Fund Flow
+Syne 800 ù Display
+Syne is a geometric display typeface designed for impactful headlines. Its ultra-bold 800 weight produces the same aggressive visual authority as the large titles in Image 1 ('Premium Plan', 'Home') and the AceDeal logo. It signals that this is a serious, professional platform ù not a generic data tool.
+2.1  Syne Usage Rules
+Element
+Weight
+Size
+Color
+Letter Spacing
+Example Text
+Page / App Title
+800
+56û72px
+#E8660A (orange)

@@ -1,0 +1,712 @@
+
+
+UI / UX  DESIGN DOCUMENT
+
+Fund Flow Tracking
+for Fraud Detection
+
+PS3  —  IDEA 2.0 Hackathon  —  Vidyavihar University
+
+Document Type
+UI/UX Design Document
+Problem Statement
+PS3 — Tracking of Funds for Fraud Detection
+Design Theme
+Dark Finance + Light Investigator Workbench
+Inspired By
+Fintech Dashboard (Image 1) + AceDeal UI (Image 2)
+Primary Color
+#E8660A (Burnt Orange)
+Version
+1.0 — Hackathon Edition
+
+1. Design Overview & Inspiration
+The PS3 Fund Flow Tracking platform draws from two distinct design languages seen in the uploaded reference screenshots — blending them strategically across the two primary user modes of the application.
+
+1.1  Reference Analysis — Image 1 (Dark Finance Dashboard)
+The first reference shows a sophisticated crypto/finance dashboard with a near-black background (#0D0D0D), burnt-orange accent color (#E8660A), and modular card-based layout. Key design observations:
+Dark theme creates authority and focus — ideal for the high-stakes Alert & Monitoring view
+Orange accent (#E8660A) used exclusively for CTAs, positive indicators, and active elements — e.g. the 'Exchange' button, percentage badges, and chart highlights
+Cards are dark (#1A1A1A) with subtle border separation — no heavy drop shadows
+Typography uses a bold sans-serif for large numbers (account balances, profit figures) with smaller muted labels below each metric
+The Portfolio Tokens section uses pill/chip components for category tags (similar to how we tag account types: Savings, Current, Corporate)
+Activity chart uses an area/line chart with orange fill — maps directly to our transaction volume over time chart
+'Withers' badge pattern (orange pill) will be adapted for alert severity tags: HIGH, MEDIUM, LOW
+
+1.2  Reference Analysis — Image 2 (AceDeal Light Dashboard)
+The second reference shows a light-mode analytics dashboard with a soft purple/lavender color scheme. This maps to the Investigator Workbench — where analysts review cases in detail. Key design observations:
+Light cards with very subtle purple-tinted backgrounds (#F7F5FF) reduce eye strain during long investigation sessions
+The Balance History panel layout (label + amount + timestamp + status) maps directly to our Transaction Timeline panel
+Payment Analytics section with 'Orders Placed: 120' and metric cards maps to our 'Alerts Triggered', 'Amount at Risk', 'Cases Resolved' KPI cards
+The pie/donut chart (Total Orders by Category) maps to our Fund Flow by Channel breakdown (NEFT, RTGS, UPI, ATM)
+'In Progress' and 'Paid' status pills map to our case status workflow: Open, Under Investigation, Escalated, Closed
+Recent Orders list with avatar + description + status maps to our Recent Alerts feed with account name + pattern description + risk score
+
+1.3  Hybrid Design Strategy
+Rather than choosing one theme, the PS3 platform uses a purposeful dual-theme architecture:
+Screen / Module
+Theme Applied
+Rationale
+Main Monitoring Dashboard
+Dark (Image 1 inspired)
+Conveys urgency; mirrors SOC and trading floor aesthetics that bank security teams recognise
+Investigator Workbench
+Light (Image 2 inspired)
+Easier to read during long investigations; more document/report-like feel
+Graph Visualisation Panel
+Dark with neon overlays
+Transaction graph nodes pop on dark background; colour-coding is more visible
+FIU Report Generator
+Light / neutral
+Report output must look professional and printable
+Alert Queue / Triage
+Dark with orange/red accents
+Mirrors SIEM interfaces that analysts are familiar with
+Login / Landing
+Dark with orange gradient hero
+Strong first impression matching Image 1 premium banner style
+
+2. Color System
+The color palette is derived directly from the reference screenshots and extended with functional semantic colors for the fraud detection context.
+
+2.1  Primary Palette
+Token Name
+Hex Value
+Source
+Usage
+--color-accent
+#E8660A
+Image 1 — Exchange button, badge fills
+Primary CTAs, active states, positive alerts, chart highlights
+--color-accent-gold
+#F5A623
+Image 1 — percentage badges
+Secondary accents, warning states, chart area fills
+--color-bg-dark
+#0D0D0D
+Image 1 — main background
+Dashboard background, monitoring screen
+--color-card-dark
+#1A1A1A
+Image 1 — card surfaces
+Card backgrounds in dark mode
+--color-card-light
+#F7F5FF
+Image 2 — card surfaces
+Card backgrounds in light/investigator mode
+--color-purple
+#7B5EA7
+Image 2 — sidebar, headings
+Section headers, navigation active state, tags
+--color-bg-light
+#FFFFFF
+Image 2 — page background
+Investigator workbench page background
+--color-border-dark
+#2A2A2A
+Image 1 — card borders
+Borders in dark mode
+--color-border-light
+#E8E4F4
+Image 2 — card borders
+Borders in light mode
+
+2.2  Semantic / Functional Colors
+Token Name
+Hex Value
+Semantic Meaning
+Where Used
+--color-risk-critical
+#FF4757
+Critical risk / confirmed fraud
+Node color in graph, alert badge, risk score 80-100
+--color-risk-high
+#FF6B35
+High risk suspicious pattern
+Alert badge, risk score 60-79, node glow
+--color-risk-medium
+#F5A623
+Medium risk — needs review
+Alert badge, risk score 40-59, warning state
+--color-risk-low
+#00C48C
+Low risk / clean transaction
+Clean node color in graph, risk score 0-39
+--color-flow-active
+#4F9EFF
+Active / live transaction stream
+Animated edge in graph during live demo
+--color-dormant
+#555577
+Dormant account
+Greyed-out node in graph
+--color-positive
+#00C48C
+Positive delta / increase
+Image 1 percentage up-arrows, metric improvements
+--color-negative
+#FF4757
+Negative delta / decline
+Amount decreases, loss indicators
+
+2.3  Gradient Definitions
+Gradients are used sparingly, matching the premium feel of Image 1's orange banner:
+Gradient Token
+Definition
+Usage
+--gradient-hero
+linear-gradient(135deg, #E8660A 0%, #F5A623 100%)
+Hero banner, premium upgrade card (mirrors Image 1 top banner exactly)
+--gradient-card-glow
+radial-gradient(circle at top-left, #E8660A15, transparent 60%)
+Subtle glow on hovered alert cards in dark mode
+--gradient-graph-bg
+radial-gradient(ellipse at center, #1A1A2E 0%, #0D0D0D 100%)
+Background of the transaction graph panel
+--gradient-risk-bar
+linear-gradient(90deg, #00C48C, #F5A623, #FF4757)
+Risk score progress bar — green to red spectrum
+
+3. Typography System
+Typography is chosen to balance financial data density (requiring clear tabular numerics) with investigative document readability. This mirrors the dual-font approach seen in both reference images.
+
+Role
+Font Family
+Weight
+Size
+Usage Example
+Display / Hero
+Syne or Space Grotesk
+800 ExtraBold
+48–72px
+Dashboard title, page hero headings
+Section Heading
+Syne
+700 Bold
+24–32px
+Panel titles: 'Alert Queue', 'Graph View'
+Metric Number
+DM Mono or Roboto Mono
+600 SemiBold
+28–48px
+₹5,654.32 (Image 1 account balance style)
+Body / Labels
+DM Sans or Inter
+400 Regular
+13–15px
+Descriptions, table content, timestamps
+Caption / Muted
+DM Sans
+300 Light
+11–12px
+Metadata, secondary labels below metrics
+Code / IDs
+DM Mono
+400 Regular
+12–13px
+Account IDs, transaction hashes, API responses
+Tag / Badge
+DM Mono
+500 Medium
+10–11px
+Risk level badges: HIGH, MED, LOW; status pills
+Button / CTA
+Syne
+700 Bold
+14–16px
+Exchange button (Image 1), Generate Report button
+
+3.1  Number Formatting Standards
+Large financial figures are displayed in the same high-contrast monospace style as Image 1 ($5,654.32 in large bold):
+Amounts above ₹1 lakh: use Indian number format — ₹12,54,320.00
+Amounts displayed in graph tooltips: abbreviate — ₹12.5L, ₹3.2Cr
+Percentage changes: always show sign (+2.32%, -4.65%) with color — green positive, red negative (exact pattern from Image 1 badges)
+Risk scores: displayed as XX/100 in monospace font with gradient color coding
+Timestamps: relative ('2 mins ago') in the feed; absolute (DD MMM YYYY HH:MM) in the detail view
+
+4. Component Library
+All UI components are derived from patterns observed in the reference screenshots and adapted for the fraud detection context.
+
+4.1  Metric Cards
+Inspired by the 'Total Profit' and 'Today Activity' cards in Image 1. Each metric card contains:
+Element
+Spec
+Reference
+Background
+Dark: #1A1A1A  |  Light: #F7F5FF
+Card surfaces in Image 1 and Image 2
+Border
+1px solid #2A2A2A (dark) / #E8E4F4 (light)
+Subtle separation, no heavy shadows
+Border Radius
+12px
+Consistent with both reference images
+Padding
+20px 24px
+Matches spacing density in Image 1
+Top Label
+12px DM Mono, ALL CAPS, muted color
+'TOTAL PROFIT', 'TODAY ACTIVITY' style
+Primary Value
+32px DM Mono bold, white/dark
+₹32,569.32 large number treatment
+Delta Badge
+Pill: 8px border-radius, 10px DM Mono bold
+↑ 56.32% orange pill from Image 1
+Delta Color
+Positive: #00C48C  |  Negative: #FF4757
+Green/red semantic coloring
+Hover State
+Subtle orange glow: box-shadow 0 0 20px #E8660A20
+Interactive feedback
+
+4.2  Risk / Status Badge Pills
+Directly adapted from the 'Withers' orange badge in Image 1 and the 'In Progress / Paid' pills in Image 2:
+Badge Type
+Background
+Text Color
+Border
+Usage
+CRITICAL
+#FF475720
+#FF4757
+1px #FF475750
+Confirmed circular fraud pattern, >80 risk score
+HIGH
+#E8660A20
+#E8660A
+1px #E8660A50
+Suspicious pattern, 60-79 risk score
+MEDIUM
+#F5A62320
+#F5A623
+1px #F5A62350
+Anomalous behavior, 40-59 risk score
+LOW
+#00C48C20
+#00C48C
+1px #00C48C50
+Watchlist item, 20-39 risk score
+OPEN
+#4F9EFF20
+#4F9EFF
+1px #4F9EFF50
+Case status: not yet assigned
+IN REVIEW
+#7B5EA720
+#7B5EA7
+1px #7B5EA750
+Case status: under investigation
+ESCALATED
+#FF475720
+#FF4757
+1px #FF475750
+Case sent to senior / legal
+CLOSED
+#88888820
+#888888
+1px #88888850
+Case resolved / false positive
+
+4.3  Transaction / Activity Feed
+Modeled on the 'Activity' card (Image 1) and 'Balance History' list (Image 2). Each feed item contains:
+Account avatar (2-letter monogram with background color derived from account type)
+Account name in bold + transaction description in muted smaller text below
+Amount: right-aligned, color-coded (outflow orange/red, inflow green)
+Timestamp: relative time + absolute date on hover
+Risk badge pill on the right edge (only on flagged transactions)
+Left border accent line (4px wide, colored by risk level) — adapted from Image 2 left-border pattern
+
+4.4  Charts & Data Visualisations
+Chart Type
+Library
+Inspiration
+Used For
+Area / Line Chart
+Recharts AreaChart
+Image 1 wallet value chart with orange fill
+Transaction volume over time, amount trend
+Bar Chart
+Recharts BarChart
+Image 1 Activity monthly spending bars
+Monthly suspicious transaction count by branch
+Donut Chart
+Recharts PieChart with inner radius
+Image 2 Total Orders pie chart
+Fund flow breakdown by channel (NEFT/UPI/ATM)
+Force Graph
+D3.js / Sigma.js
+Custom — not in references
+Main transaction graph — the core demo visual
+Spark Line
+Recharts LineChart tiny
+Image 1 wallet spark lines
+Mini trend lines inside KPI cards
+Risk Gauge
+Custom SVG arc
+Image 1 circular storage chart
+Risk score 0-100 arc gauge per case
+
+5. Screen-by-Screen Design Specifications
+
+5.1  Screen 1 — Main Monitoring Dashboard (Dark Mode)
+This is the first screen judges see. Theme: Dark (Image 1). Full-width grid layout.
+
+Panel
+Position
+Size
+Content
+Key Interaction
+Top KPI Row
+Top, full width
+4 equal cards
+Total Alerts Today | Amount at Risk | Cases Open | Avg Risk Score — all with delta badges like Image 1
+Click card to drill down
+Transaction Graph
+Center-left, largest panel
+~60% width, 500px height
+D3.js force graph — dark bg, color-coded nodes, animated edges for live flows
+Zoom, pan, click node
+Alert Queue
+Right panel
+~38% width, full height
+Sorted list of flagged transactions with risk badges — mirrors Image 2 Balance History layout
+Click to open case
+Activity Chart
+Bottom-left
+~60% width
+Area chart — transaction volume over last 30 days, orange fill — mirrors Image 1 wallet chart
+Hover for tooltip
+Channel Breakdown
+Bottom-right
+~38% width
+Donut chart — NEFT/UPI/RTGS/ATM split — mirrors Image 2 pie chart
+Click segment to filter graph
+
+5.2  Screen 2 — Transaction Graph Deep Dive
+The visual centrepiece. Full-screen dark graph with controls panel on the left. This is the most memorable demo moment.
+Background: #0D0D0D with subtle radial gradient (#1A1A2E at centre)
+Node colors: Green (#00C48C) = clean account, Orange (#F5A623) = suspicious, Red (#FF4757) = confirmed fraud, Grey (#555577) = dormant
+Node size: proportional to total transaction volume through that account
+Edge colors: Animated blue (#4F9EFF) for live/recent flows; static grey for historical
+Edge thickness: proportional to transfer amount
+On node click: side panel slides in (right) showing account profile, KYC data, full transaction history, and risk score gauge
+Control strip (top): Filter by date range | Filter by minimum amount | Highlight only flagged paths | Play/pause live stream
+
+5.3  Screen 3 — Investigator Workbench (Light Mode)
+Mirrors the AceDeal dashboard (Image 2) aesthetic. Clean, light, document-like.
+Panel
+Position
+Content
+Case Header
+Top full-width
+Case ID | Account Name | Risk Score badge | Status pill | Assigned Investigator | Date Opened
+Evidence Graph
+Left 55%
+Focused subgraph of just the suspicious accounts in this case — same D3 component but on white background
+Timeline Panel
+Right 45% top
+Chronological transaction list — adapts Image 2 Balance History style with left accent borders
+Account Profiles
+Right 45% bottom
+KYC cards for each flagged account — income declared vs actual flow mismatch highlighted in orange
+Action Bar
+Bottom sticky
+Generate STR Report | Escalate to Senior | Mark False Positive | Close Case — orange primary button matches Image 1 Exchange button
+
+5.4  Screen 4 — FIU Report Generator
+Clean white/light design. When the 'Generate Report' button is clicked, the LLM streams the narrative text word-by-word (visible in the report preview panel). This is the second biggest demo moment.
+Left panel (40%): Case summary — amount, accounts, pattern type, risk score
+Right panel (60%): Live streaming report text — typewriter animation as LLM writes
+Report sections auto-populate: Summary, Transaction Table, Pattern Description, Recommendations
+'Download PDF' and 'Submit to FIU' buttons in orange at the bottom
+
+6. Navigation & Layout Architecture
+
+6.1  Navigation Pattern
+Adapted from Image 2's left icon sidebar, extended with labels for clarity:
+Nav Item
+Icon
+Route
+Shortcut
+Dashboard
+Grid icon
+/dashboard
+D
+Graph View
+Network/nodes icon
+/graph
+G
+Alert Queue
+Bell with badge
+/alerts
+A
+Investigations
+Folder with search
+/cases
+I
+FIU Reports
+Document icon
+/reports
+R
+Settings
+Gear icon
+/settings
+S
+
+6.2  Responsive Breakpoints
+Breakpoint
+Width
+Layout Change
+Desktop (Primary)
+≥ 1440px
+Full multi-panel grid — optimised for analyst dual-monitor setup
+Laptop
+1024–1439px
+Collapsible side panels, graph takes full width on separate tab
+Tablet
+768–1023px
+Single column, graph view navigated separately
+Mobile
+< 768px
+Alert feed only — graph and full workbench require desktop
+
+6.3  Grid System
+12-column grid with 24px gutters — mirrors the card spacing in both reference images
+Card border-radius: 12px consistently (matches Image 1 and Image 2 card rounding)
+Section spacing: 32px between major panels
+Inner card padding: 20px 24px (matches Image 1 density)
+
+7. Interaction Design & Animations
+
+7.1  Graph Animations
+Animation
+Trigger
+Spec
+Purpose
+Node pulse
+When node is flagged as suspicious
+Infinite scale 1.0→1.15→1.0, duration 1.5s, orange glow
+Draw attention to new alerts
+Edge flow
+Live transaction detected
+Animated dash-offset along edge path, blue color, 0.8s
+Show money moving in real time
+Node explosion
+Circular pattern detected
+Nodes in pattern flash red simultaneously + brief expand
+Maximum visual impact for the demo moment
+Zoom to node
+Alert card clicked
+Smooth d3.zoom() transition to clicked node, 600ms ease
+Connect alert list to graph
+Subgraph highlight
+Case opened
+Non-case nodes fade to 15% opacity, case nodes glow
+Focus investigator on relevant accounts
+
+7.2  Dashboard Micro-interactions
+KPI cards: hover lifts 4px with subtle orange shadow (box-shadow 0 8px 24px #E8660A25)
+Alert feed items: hover reveals full details with smooth height expand (300ms ease)
+Risk badge pills: hover shows tooltip with factor breakdown (which rules triggered)
+Amount values: counter animation on page load — numbers count up from 0 to final value over 800ms
+Chart area fill: animates from 0 height to full on mount — standard Recharts animation
+Streaming report text: word-by-word typewriter effect at 40ms/word interval
+
+7.3  Page Transitions
+Dashboard → Graph View: graph panel expands to full screen (transform scale + translate, 400ms)
+Alert click → Workbench: slide-in from right (transform translateX, 350ms ease-out)
+Report generation: modal-style panel expands upward from the action bar
+
+8. Complete Design Token Reference
+Full CSS variable token list for implementation. These map directly from the color values extracted from the reference images.
+
+8.1  Dark Mode Tokens (Monitoring Dashboard)
+CSS Variable
+Value
+Usage
+--bg-primary
+#0D0D0D
+Page background
+--bg-card
+#1A1A1A
+Card surfaces
+--bg-card-hover
+#222222
+Card hover state
+--bg-input
+#141414
+Input field backgrounds
+--border-default
+#2A2A2A
+Card and section borders
+--border-accent
+#E8660A40
+Highlighted borders
+--text-primary
+#F0F0F0
+Primary text
+--text-secondary
+#AAAAAA
+Secondary / muted text
+--text-accent
+#E8660A
+Accent text, links
+--icon-default
+#666666
+Default icon color
+--icon-active
+#E8660A
+Active/selected icon color
+
+8.2  Light Mode Tokens (Investigator Workbench)
+CSS Variable
+Value
+Usage
+--bg-primary
+#F4F1FF
+Page background (soft purple-white from Image 2)
+--bg-card
+#FFFFFF
+Card surfaces
+--bg-card-hover
+#F7F5FF
+Card hover state
+--bg-sidebar
+#2D1B5E
+Left nav sidebar (Image 2 dark purple)
+--border-default
+#E8E4F4
+Card and section borders
+--border-accent
+#7B5EA740
+Highlighted borders
+--text-primary
+#1A1A2E
+Primary text
+--text-secondary
+#888888
+Secondary / muted text
+--text-accent
+#7B5EA7
+Purple accent text, section headers
+--icon-default
+#AAAAAA
+Default icon color
+--icon-active
+#7B5EA7
+Active/selected icon color — sidebar icons from Image 2
+
+9. Hackathon Demo — UI Build Priority
+Given the time constraints of a hackathon, this section prioritises which UI components deliver the most impact per hour of build time.
+
+Priority
+Component
+Time Estimate
+Impact
+Why
+P0 — Build First
+Transaction Graph (D3.js)
+6–8 hrs
+★★★★★
+This IS the product. Judges will spend 70% of their attention on this. Non-negotiable.
+P0 — Build First
+KPI Cards Row (4 cards)
+1–2 hrs
+★★★★★
+First thing judges see. Sets the professional tone immediately.
+P1 — Build Second
+Alert Feed Panel
+2–3 hrs
+★★★★☆
+Shows the system works end-to-end. Required for demo flow step 2.
+P1 — Build Second
+Node Click Side Panel
+2–3 hrs
+★★★★☆
+The drill-down moment — judges need to see account details on click.
+P2 — Build Third
+LLM Report Streaming
+2–3 hrs
+★★★★★
+Biggest wow moment after the graph. The typewriter effect is unforgettable.
+P2 — Build Third
+Risk Score Gauge
+1–2 hrs
+★★★☆☆
+Adds polish. SVG arc component, reusable across case cards.
+P3 — If Time Allows
+Activity Area Chart
+1–2 hrs
+★★★☆☆
+Mirrors Image 1 — adds analytical depth to the dashboard.
+P3 — If Time Allows
+Donut Chart Panel
+1 hr
+★★★☆☆
+Channel breakdown — quick to build with Recharts.
+P4 — Polish
+Page transitions
+1–2 hrs
+★★★☆☆
+Smooth animations elevate professionalism significantly.
+P4 — Polish
+Dark/Light theme toggle
+1 hr
+★★☆☆☆
+Impressive feature — shows dual-mode design was intentional.
+
+9.1  Recommended Tech Stack for UI
+Layer
+Technology
+Reason
+Graph Visualisation
+D3.js v7 + React wrapper
+Full control over force layout. Sigma.js as fallback if performance issues with >1000 nodes.
+Charts
+Recharts
+React-native, simple API, matches Image 1 chart style out of the box with custom colors.
+UI Framework
+React + Tailwind CSS v3
+Fastest path to polished dark/light UI. Tailwind's dark: modifier handles theme switching cleanly.
+Icons
+Lucide React
+Matches the clean icon style in Image 2 sidebar. MIT licensed.
+Fonts
+Google Fonts — Syne + DM Mono + DM Sans
+All three load reliably. Syne matches the bold display style of Image 1.
+Animations
+Framer Motion
+Handles page transitions and micro-interactions. The streaming text effect is a custom CSS animation.
+State Management
+Zustand
+Lightweight. Manages graph selection state, alert queue, and active case without Redux complexity.
+
+10. Accessibility Guidelines
+Even for a hackathon demo, basic accessibility signals professionalism to judges.
+
+Guideline
+Requirement
+Implementation
+Color Contrast
+WCAG AA minimum (4.5:1 for text)
+All text on dark cards meets contrast. Orange (#E8660A) on black exceeds 4.5:1.
+Risk Color Redundancy
+Never use color alone to convey risk
+Every risk badge includes both color AND text label: HIGH, MEDIUM, LOW
+Focus States
+Visible keyboard focus ring
+Custom focus ring in orange: outline 2px solid #E8660A, offset 2px
+Graph Accessibility
+Provide table alternative
+Alert Queue panel serves as accessible text alternative to the visual graph
+Font Size
+Minimum 12px for all readable text
+Smallest text in design is 11px for badge labels — acceptable for dashboard context
+Loading States
+Indicate async operations
+Skeleton shimmer on cards while data loads. Spinner on report generation.
+
+END OF DOCUMENT  —  PS3 UI/UX Design Document v1.0
+
+IDEA 2.0 Hackathon  |  Vidyavihar University
