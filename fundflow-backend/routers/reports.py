@@ -1,6 +1,6 @@
 # ============================================================
 # routers/reports.py  —  STR report + AI chat endpoint
-# Save this at:  fundflow-backend/routers/reports.py
+# Powered by Google Gemini API
 # ============================================================
 from fastapi import APIRouter, HTTPException
 
@@ -21,6 +21,11 @@ Generate professional, legally precise reports with:
 - Recommended actions
 Be factual, cite specific amounts and timestamps."""
 
+AI_SYSTEM_CHAT = """You are FraudPulse AI — an expert AML (Anti-Money Laundering) co-investigator 
+for bank analysts. You assist in fraud detection, pattern analysis, and case building.
+When asked about accounts, transactions, or fraud patterns, provide precise forensic analysis.
+Cite risk scores, amounts, and timelines. Be concise but thorough."""
+
 
 class ReportRequest(BaseModel):
     case_id:          str
@@ -37,21 +42,30 @@ class ChatRequest(BaseModel):
     case_context: dict = {}
 
 
+def _get_gemini_client(api_key: str):
+    """Initialize and return a Gemini GenerativeModel."""
+    import google.generativeai as genai
+    genai.configure(api_key=api_key)
+    return genai.GenerativeModel("gemini-1.5-flash")
+
+
 @router.post("/generate")
 async def generate_report(req: ReportRequest):
-    """Generate STR report using Anthropic API."""
-    api_key = os.getenv("ANTHROPIC_API_KEY", "")
+    """Generate STR report using Google Gemini API."""
+    api_key = os.getenv("GOOGLE_API_KEY", "")
 
-    if not api_key or "YOUR-KEY-HERE" in api_key:
+    if not api_key:
         return {
             "case_id": req.case_id,
             "report":  _demo_report(req),
-            "model":   "demo-mode — add ANTHROPIC_API_KEY to .env",
+            "model":   "demo-mode",
+            "tokens_used": 0
         }
+
     try:
-        import anthropic
-        client = anthropic.Anthropic(api_key=api_key)
+        model = _get_gemini_client(api_key)
         prompt = (
+            f"{DEFAULT_SYSTEM}\n\n"
             f"Generate a complete FIU-IND Suspicious Transaction Report for:\n"
             f"Case ID: {req.case_id}\n"
             f"Pattern: {req.pattern}\n"
@@ -60,73 +74,73 @@ async def generate_report(req: ReportRequest):
             f"Accounts involved: {len(req.accounts)}\n"
         )
         if req.additional_notes:
-            prompt += f"Notes: {req.additional_notes}\n"
+            prompt += f"Additional Notes: {req.additional_notes}\n"
 
-        message = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=2000,
-            system=DEFAULT_SYSTEM,
-            messages=[{"role": "user", "content": prompt}],
-        )
+        response = model.generate_content(prompt)
         return {
             "case_id":     req.case_id,
-            "report":      message.content[0].text,
-            "model":       "claude-sonnet-4-20250514",
-            "tokens_used": message.usage.output_tokens,
+            "report":      response.text,
+            "model":       "gemini-1.5-flash",
+            "tokens_used": response.usage_metadata.total_token_count if hasattr(response, 'usage_metadata') else 0,
         }
     except Exception as e:
-        raise HTTPException(500, f"Report generation failed: {str(e)}")
+        error_msg = str(e)
+        if "API_KEY_INVALID" in error_msg or "403" in error_msg:
+            return {"case_id": req.case_id, "report": _demo_report(req), "model": "demo-mode (invalid key)"}
+        raise HTTPException(500, f"Report generation failed: {error_msg}")
 
 
 @router.post("/chat")
 async def ai_chat(req: ChatRequest):
     """
     AI co-investigator chat endpoint.
-    Frontend sends messages here → backend calls Anthropic → returns reply.
-    This avoids CORS issues with direct browser-to-Anthropic calls.
+    Frontend sends messages here → backend calls Google Gemini → returns reply.
     """
-    api_key = os.getenv("ANTHROPIC_API_KEY", "")
+    api_key = os.getenv("GOOGLE_API_KEY", "")
 
-    if not api_key or "YOUR-KEY-HERE" in api_key or "P2k9uG" in api_key:
+    if not api_key:
         return {
             "reply": (
-                "Anthropic API key not configured. Currently running in demo mode.\n\n"
-                "To fix this and enable full AI analysis:\n"
+                "Google Gemini API key not configured.\n\n"
+                "To fix this:\n"
                 "1. Open fundflow-backend/.env\n"
-                "2. Replace the placeholder with your real Anthropic key\n"
-                "3. Get your key from: console.anthropic.com/settings/keys"
+                "2. Add: GOOGLE_API_KEY=your_key_here\n"
+                "3. Get your key from: aistudio.google.com/app/apikey"
             )
         }
 
     try:
-        import anthropic
-        client = anthropic.Anthropic(api_key=api_key)
+        import google.generativeai as genai
+        genai.configure(api_key=api_key)
 
-        # Use system prompt from request if provided, else use default
-        system_prompt = req.case_context.get("system_prompt", DEFAULT_SYSTEM)
+        system_prompt = req.case_context.get("system_prompt", AI_SYSTEM_CHAT)
 
-        # Clean messages — only keep role + content
-        clean_messages = [
-            {"role": m["role"], "content": m["content"]}
-            for m in req.messages
-            if m.get("role") in ("user", "assistant") and m.get("content")
-        ]
+        # Build conversation history for Gemini
+        history = []
+        messages = [m for m in req.messages if m.get("role") in ("user", "assistant") and m.get("content")]
 
-        if not clean_messages:
+        if not messages:
             return {"reply": "No message received."}
 
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=1000,
-            system=system_prompt,
-            messages=clean_messages,
+        # Convert to Gemini chat format
+        for m in messages[:-1]:
+            role = "user" if m["role"] == "user" else "model"
+            history.append({"role": role, "parts": [m["content"]]})
+
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            system_instruction=system_prompt
         )
-        return {"reply": response.content[0].text}
+        chat = model.start_chat(history=history)
+        last_msg = messages[-1]["content"]
+        response = chat.send_message(last_msg)
+
+        return {"reply": response.text}
 
     except Exception as e:
         error_msg = str(e)
-        if "401" in error_msg or "authentication" in error_msg.lower():
-            return {"reply": "Invalid API key. Check your key at console.anthropic.com and update .env"}
+        if "API_KEY_INVALID" in error_msg or "403" in error_msg:
+            return {"reply": "Invalid Google API key. Check your key at aistudio.google.com and update .env"}
         raise HTTPException(500, f"AI chat failed: {error_msg}")
 
 
@@ -159,4 +173,4 @@ RED FLAGS
 RECOMMENDATION
 Immediate STR filing with FIU-IND under PMLA 2002 Section 12.
 
-NOTE: Add ANTHROPIC_API_KEY to fundflow-backend/.env for real AI-generated reports."""
+NOTE: Add GOOGLE_API_KEY to fundflow-backend/.env for real AI-generated reports."""
