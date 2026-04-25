@@ -546,10 +546,11 @@ function _rebuildGraphWithFilter() {
   const link = g.append('g').selectAll('line').data(links).enter().append('line')
     .attr('stroke', d => {
       const s = nodes.find(n => n.id === (d.source.id || d.source));
-      const t = nodes.find(n => n.id === (d.target.id || d.target));
-      return (s?.risk === 'fraud' || t?.risk === 'fraud') ? 'rgba(255,71,87,0.45)' : 'rgba(79,158,255,0.15)';
+      if (s?.risk === 'fraud') return 'rgba(255,71,87,0.3)';
+      if (s?.risk === 'suspicious') return 'rgba(245,166,35,0.2)';
+      return 'rgba(79,158,255,0.1)';
     })
-    .attr('stroke-width', d => Math.max(1, Math.min((d.amount || 50000) / 150000, 4)));
+    .attr('stroke-width', d => Math.max(0.5, Math.min((d.amount || 50000) / 200000, 2)));
 
   // GNN predictive edges
   if (gnnOn) {
@@ -564,8 +565,8 @@ function _rebuildGraphWithFilter() {
     g.append('g').selectAll('line').data(predLinks).enter().append('line')
       .attr('x1', d => d.source.x || W / 2).attr('y1', d => d.source.y || H / 2)
       .attr('x2', d => d.target.x || W / 2).attr('y2', d => d.target.y || H / 2)
-      .attr('stroke', '#4F9EFF').attr('stroke-width', 1.5)
-      .attr('stroke-dasharray', '6,4').attr('stroke-opacity', d => d.confidence * 0.7)
+      .attr('stroke', '#4F9EFF').attr('stroke-width', 1)
+      .attr('stroke-dasharray', '4,4').attr('stroke-opacity', d => d.confidence * 0.6)
       .attr('class', 'gnn-pred-edge');
   }
 
@@ -576,25 +577,25 @@ function _rebuildGraphWithFilter() {
       .on('drag',  (e, d) => { d.fx = e.x; d.fy = e.y; })
       .on('end',   (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
 
-  ng.filter(d => d.risk === 'fraud').append('circle').attr('r', 22)
-    .attr('fill', 'none').attr('stroke', '#FF4757').attr('stroke-width', 1.5)
-    .attr('stroke-opacity', 0.25).attr('class', 'glow-ring-pulse');
+  // Refined subtle halo for fraud/suspicious
+  ng.filter(d => d.risk === 'fraud' || d.risk === 'suspicious').append('circle')
+    .attr('r', d => d.risk === 'fraud' ? 18 : 14)
+    .attr('fill', 'none')
+    .attr('stroke', d => d.risk === 'fraud' ? '#FF4757' : '#F5A623')
+    .attr('stroke-width', 1)
+    .attr('stroke-opacity', 0.4)
+    .attr('class', 'glow-ring-pulse');
 
+  // Solid clean nodes
   ng.append('circle')
-    .attr('r', d => ({ fraud:13, suspicious:10, dormant:6, clean:8 })[d.risk] || 8)
+    .attr('r', d => ({ fraud:9, suspicious:7, dormant:5, clean:5 })[d.risk] || 5)
     .attr('fill', d => getColor(d))
-    .attr('stroke', d => getColor(d))
-    .attr('stroke-width', 2).attr('stroke-opacity', 0.4)
-    .attr('filter', d => d.risk === 'fraud' ? 'url(#mgGlow2)' : '')
-    .attr('class', d => d.risk === 'fraud' ? 'node-pulse' : '');
+    .attr('stroke', '#0A0A0F')
+    .attr('stroke-width', 1.5)
+    .attr('filter', d => d.risk === 'fraud' ? 'url(#mgGlow2)' : '');
 
-  // Show labels only for flagged filter or small graphs
-  if (filter === 'flagged' || nodes.length < 50) {
-    ng.append('text').text(d => d.id)
-      .attr('font-family', 'DM Mono, monospace').attr('font-size', '8px')
-      .attr('fill', '#AAA').attr('text-anchor', 'middle')
-      .attr('dy', d => ({ fraud:20, suspicious:16, dormant:12, clean:14 })[d.risk] || 14);
-  }
+  // Tooltip on hover instead of messy labels
+  ng.append('title').text(d => d.name ? `${d.name} (${d.id})\nRisk: ${d.riskScore}` : d.id);
 
   ng.on('click', (e, d) => { e.stopPropagation(); if (typeof openNodePanel === 'function') openNodePanel(d); });
   svg.on('click', () => { if (typeof closeNodePanel === 'function') closeNodePanel(); });

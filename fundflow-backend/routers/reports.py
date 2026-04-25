@@ -3,7 +3,7 @@
 # Save this at:  fundflow-backend/routers/reports.py
 # ============================================================
 from fastapi import APIRouter, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic import BaseModel
 from typing import Optional, List
 import os

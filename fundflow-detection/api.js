@@ -63,10 +63,20 @@ async function generateReportFromBackend(caseId) {
   }
 }
 
+let reconnectAttempts = 0;
+const MAX_RECONNECT = 5;
+
 // Connect WebSocket for live transactions
 function connectLiveStream() {
+  if (reconnectAttempts >= MAX_RECONNECT) {
+    console.log('Max WebSocket reconnects reached. Stopping.');
+    return null;
+  }
   const ws = new WebSocket('ws://127.0.0.1:8000/ws/stream');
-  ws.onopen = () => console.log('Live stream connected');
+  ws.onopen = () => {
+    console.log('Live stream connected');
+    reconnectAttempts = 0;
+  };
   ws.onmessage = (e) => {
     const msg = JSON.parse(e.data);
     if (msg.type === 'transaction') {
@@ -79,7 +89,11 @@ function connectLiveStream() {
       console.log('New alert:', msg.data);
     }
   };
-  ws.onclose = () => setTimeout(connectLiveStream, 3000); // auto-reconnect
+  ws.onclose = (e) => {
+    if (e.code === 1000 || e.code === 1001) return; // Intentional close
+    reconnectAttempts++;
+    setTimeout(connectLiveStream, 3000); // auto-reconnect
+  };
   return ws;
 }
 

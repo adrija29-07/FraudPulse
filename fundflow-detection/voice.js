@@ -22,6 +22,7 @@ const voiceIntents = [
   { patterns: ['reports', 'open reports', 'generate report', 'fiu report'], action: 'openReports' },
   { patterns: ['flow', 'money flow', 'show flow', 'play flow'], action: 'openFlow' },
   { patterns: ['read findings', 'read alerts', 'what is flagged', 'top findings', 'read'], action: 'readFindings' },
+  { patterns: ['case', 'tell me about case', 'problem in case', 'case status', 'explain case'], action: 'readCase' },
   { patterns: ['risk one', 'risk a001', 'rajesh', 'rajesh mehta'], action: 'highlightA001' },
   { patterns: ['shell corp', 'a002', 'shell corporation'], action: 'highlightA002' },
   { patterns: ['mule', 'mule account', 'a016', 'mule x1'], action: 'highlightA016' },
@@ -68,6 +69,7 @@ function executeVoiceAction(action, transcript) {
     case 'openReports': switchView('reports'); speak('Opening FIU report generator.'); break;
     case 'openFlow': switchView('flow'); setTimeout(playMoneyFlow, 500); speak('Opening money flow animation.'); break;
     case 'readFindings': readTopFindings(); break;
+    case 'readCase': readCaseFindings(); break;
     case 'highlightA001':
       switchView('graph');
       speak('Highlighting A001 Rajesh Mehta Enterprises. Risk score 84 out of 100. Round-trip pattern detected with 3.07 times income mismatch.');
@@ -104,6 +106,13 @@ function readTopFindings() {
   updateVoiceTranscript('Reading top 3 findings...');
 }
 
+function readCaseFindings() {
+  switchView('investigation');
+  const text = "Displaying Case F D 2026 00842. The primary subject is Rajesh Mehta Enterprises. The detected problem is a round-trip money laundering pattern involving 4 accounts. The total amount at risk is 18 lakh 45 thousand rupees, completed over an 8 hour and 40 minute timespan. An income mismatch factor of 3.07 times was also identified. I recommend escalating this to a senior analyst immediately.";
+  speak(text);
+  updateVoiceTranscript('Displaying and reading case details...');
+}
+
 function speak(text) {
   if (!('speechSynthesis' in window)) return;
   window.speechSynthesis.cancel();
@@ -111,9 +120,10 @@ function speak(text) {
   utterance.rate = 0.95;
   utterance.pitch = 1.0;
   utterance.volume = 0.9;
-  // Prefer a clear voice
+  // Prefer a clear English voice
   const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.name.includes('Google') || v.name.includes('Neural') || v.lang === 'en-IN');
+  const preferred = voices.find(v => (v.name.includes('Google') || v.name.includes('Neural') || v.name.includes('Premium')) && v.lang.startsWith('en')) 
+                 || voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB' || v.lang === 'en-IN');
   if (preferred) utterance.voice = preferred;
   window.speechSynthesis.speak(utterance);
 }

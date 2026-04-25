@@ -354,49 +354,100 @@ body {
 
 /* ===== FULL GRAPH VIEW ===== */
 .graph-fullscreen {
-  width: 100%; height: calc(100vh - 140px);
-  background: var(--gradient-graph-bg);
-  border-radius: 12px; position: relative; overflow: hidden;
-  border: 1px solid var(--border-default);
+  width: 100%; height: calc(100vh - 148px);
+  background:
+    radial-gradient(circle at 20% 80%, rgba(255,71,87,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(79,158,255,0.04) 0%, transparent 50%),
+    linear-gradient(180deg, #080810 0%, #0D0D14 100%);
+  border-radius: 14px; position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.05);
 }
-.graph-fullscreen svg { width: 100%; height: 100%; }
+/* Subtle dot-grid overlay */
+.graph-fullscreen::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+.graph-fullscreen svg { width: 100%; height: 100%; position: relative; z-index: 1; }
 
 .graph-top-strip {
   position: absolute; top: 0; left: 0; right: 0;
-  padding: 14px 20px; display: flex; align-items: center; gap: 10px;
-  z-index: 10; background: linear-gradient(to bottom, rgba(13,13,13,0.8), transparent);
+  padding: 0 20px;
+  height: 52px;
+  display: flex; align-items: center; gap: 8px;
+  z-index: 10;
+  background: rgba(8, 8, 16, 0.92);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
 }
+
+.graph-ctrl-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #888;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.graph-ctrl-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.graph-ctrl-btn.active {
+  background: rgba(232,102,10,0.15);
+  border-color: #E8660A;
+  color: #E8660A;
+}
+
+.graph-legend {
+  position: absolute; bottom: 20px; right: 20px;
+  background: rgba(10, 10, 18, 0.85);
+  padding: 12px 18px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; gap: 16px;
+}
+.graph-legend .legend-item { font-size: 11px; color: #aaa; display: flex; align-items: center; gap: 6px; }
+.graph-legend .legend-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
 
 /* ===== NODE SIDE PANEL ===== */
 .node-side-panel {
-  position: absolute; top: 0; right: 0; width: 340px; height: 100%;
-  background: rgba(26,26,26,0.97);
-  border-left: 1px solid var(--border-default);
-  backdrop-filter: blur(12px); padding: 24px; overflow-y: auto;
+  position: absolute; top: 0; right: 0; width: 320px; height: 100%;
+  background: rgba(10, 10, 18, 0.97);
+  border-left: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(20px);
+  padding: 28px 20px 20px;
+  overflow-y: auto;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(.4,0,.2,1);
   z-index: 20;
+  box-shadow: -20px 0 60px rgba(0,0,0,0.6);
 }
 .node-side-panel.open { transform: translateX(0); }
 
 .node-panel-close {
-  position: absolute; top: 16px; right: 16px; width: 32px; height: 32px;
-  border-radius: 8px; border: 1px solid var(--border-default); background: var(--bg-card);
-  color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 16px; transition: all 0.2s;
+  position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+  border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+  color: #666; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; transition: all 0.2s; line-height: 1;
 }
 .node-panel-close:hover { border-color: var(--color-accent); color: var(--color-accent); }
 
-.node-panel-header { margin-bottom: 24px; }
+.node-panel-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .node-panel-name { font-family: var(--font-display); font-size: var(--text-h3); font-weight: var(--weight-bold); color: var(--text-primary); margin-bottom: 4px; }
 .node-panel-id { font-family: var(--font-badge); font-size: var(--text-caption); color: var(--text-secondary); letter-spacing: 0.5px; }
 
-.node-panel-section { margin-bottom: 20px; }
-.node-panel-section-title { font-family: var(--font-badge); font-size: var(--text-badge); font-weight: var(--weight-medium); text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); margin-bottom: 10px; }
+.node-panel-section { margin-bottom: 18px; }
+.node-panel-section-title { font-family: var(--font-badge); font-size: 9px; font-weight: var(--weight-medium); text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.3); margin-bottom: 10px; }
 
-.node-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(42,42,42,0.25); }
-.node-detail-label { font-family: var(--font-body); font-size: var(--text-body-sm); color: var(--text-secondary); }
-.node-detail-value { font-family: var(--font-number); font-size: var(--text-body-sm); font-weight: var(--weight-bold); color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.node-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.node-detail-label { font-family: var(--font-body); font-size: 12px; color: var(--text-secondary); }
+.node-detail-value { font-family: var(--font-number); font-size: 12px; font-weight: var(--weight-bold); color: var(--text-primary); font-variant-numeric: tabular-nums; }
 
 .risk-gauge { width: 120px; height: 80px; margin: 0 auto 12px; }
 

@@ -128,7 +128,7 @@ function switchView(viewId) {
       startDemoFlashSequence(); // Feature 2 — auto-demo
     }, 500);
   }
-  if (viewId === 'workbench') {
+  if (viewId === 'investigation') {
     setTimeout(() => initEvidenceGraph(), 200);
   }
 }
@@ -205,7 +205,7 @@ function renderAlerts(containerId, data) {
         <span class="badge badge-${alert.risk}">${alert.risk}</span>
         <span class="alert-time">${alert.time}</span>
       </div>`;
-    el.addEventListener('click', () => switchView('workbench'));
+    el.addEventListener('click', () => switchView('investigation'));
     container.appendChild(el);
   });
 }
