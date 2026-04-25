@@ -133,6 +133,17 @@ function switchView(viewId) {
   }
 }
 
+function switchInvPanel(panelId) {
+  document.querySelectorAll('.inv-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.inv-tab').forEach(t => t.classList.remove('active'));
+  
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('active');
+  
+  const tab = document.querySelector(`.inv-tab[data-panel="${panelId}"]`);
+  if (tab) tab.classList.add('active');
+}
+
 // ===================================================
 // LIVE TIME
 // ===================================================
@@ -312,16 +323,16 @@ function initFullGraph() {
   }));
 
   const sim = d3.forceSimulation(nodes)
-    .force('link',      d3.forceLink(links).id(d => d.id).distance(120))
-    .force('charge',    d3.forceManyBody().strength(-400))
+    .force('link',      d3.forceLink(links).id(d => d.id).distance(160))
+    .force('charge',    d3.forceManyBody().strength(-700))
     .force('center',    d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide(30));
+    .force('collision', d3.forceCollide(40));
 
   const link = g.append('g').selectAll('line').data(links).enter().append('line')
-    .attr('stroke', d => d.amount > 400000 ? 'rgba(255,71,87,0.35)'
-                       : d.amount > 200000 ? 'rgba(245,166,35,0.3)'
-                       : 'rgba(79,158,255,0.18)')
-    .attr('stroke-width', d => Math.max(1.5, Math.min(d.amount / 80000, 5)))
+    .attr('stroke', d => d.amount > 400000 ? 'rgba(255,71,87,0.6)'
+                       : d.amount > 200000 ? 'rgba(245,166,35,0.5)'
+                       : 'rgba(79,158,255,0.3)')
+    .attr('stroke-width', d => Math.max(2, Math.min(d.amount / 60000, 6)))
     .attr('marker-end', d => d.amount > 400000 ? 'url(#arrow-FF4757)'
                            : d.amount > 200000 ? 'url(#arrow-F5A623)'
                            : 'url(#arrow-4F9EFF)');
@@ -330,8 +341,23 @@ function initFullGraph() {
     .style('cursor', 'pointer');
 
   nodeGroup.append('circle')
-    .attr('r', 10)
-    .attr('fill', d => riskColorMap[d.risk]);
+    .attr('r', d => d.risk === 'fraud' || d.risk === 'suspicious' ? 16 : 12)
+    .attr('fill', d => riskColorMap[d.risk])
+    .style('filter', 'url(#glowFull)')
+    .style('stroke', 'rgba(255,255,255,0.25)')
+    .style('stroke-width', 2)
+    .on('mouseover', function() { d3.select(this).transition().duration(200).attr('r', 20); })
+    .on('mouseout', function(e, d) { d3.select(this).transition().duration(200).attr('r', d.risk === 'fraud' || d.risk === 'suspicious' ? 16 : 12); });
+
+  nodeGroup.append('text')
+    .text(d => d.name.split(' ')[0])
+    .attr('dx', 22)
+    .attr('dy', 5)
+    .style('fill', 'rgba(255,255,255,0.85)')
+    .style('font-family', 'Inter, sans-serif')
+    .style('font-size', '12px')
+    .style('font-weight', '500')
+    .style('pointer-events', 'none');
 
   // ✅ MODIFIED CLICK HANDLER
   nodeGroup.on('click', (e, d) => { 

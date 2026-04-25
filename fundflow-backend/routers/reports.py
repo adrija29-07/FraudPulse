@@ -87,15 +87,14 @@ async def ai_chat(req: ChatRequest):
     """
     api_key = os.getenv("ANTHROPIC_API_KEY", "")
 
-    if not api_key or "YOUR-KEY-HERE" in api_key:
+    if not api_key or "YOUR-KEY-HERE" in api_key or "P2k9uG" in api_key:
         return {
             "reply": (
-                "Anthropic API key not configured.\n\n"
-                "To fix this:\n"
+                "Anthropic API key not configured. Currently running in demo mode.\n\n"
+                "To fix this and enable full AI analysis:\n"
                 "1. Open fundflow-backend/.env\n"
-                "2. Replace sk-ant-YOUR-KEY-HERE with your real key\n"
-                "3. Get your key from: console.anthropic.com/settings/keys\n"
-                "4. Save .env and restart uvicorn (Ctrl+C then uvicorn main:app --reload --port 8000)"
+                "2. Replace the placeholder with your real Anthropic key\n"
+                "3. Get your key from: console.anthropic.com/settings/keys"
             )
         }
 
